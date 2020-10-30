@@ -1,0 +1,64 @@
+import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class BottomNav extends StatefulWidget {
+  int currentIndex;
+  BottomNav({this.currentIndex});
+
+  @override
+  _BottomNavState createState() => _BottomNavState();
+}
+
+class _BottomNavState extends State<BottomNav> {
+  List<Widget> _botNavList;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.currentIndex == null) {
+      setState(() {
+        widget.currentIndex = 0;
+      });
+    }
+    _botNavList = [
+      HomeBotNav(),
+      Container(color: Colors.blue,),
+      Container(color: Colors.green,),
+      Container(color: Colors.purple,),
+      Container(color: Colors.yellow,),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        return Future.value(false);
+      },
+      child: Scaffold(
+        body: SafeArea(child: _botNavList[widget.currentIndex]),
+        bottomNavigationBar: CurvedNavigationBar(
+          items: <Widget>[
+            SvgPicture.asset("assets/home.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+            SvgPicture.asset("assets/calendar.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+            SvgPicture.asset("assets/group.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+            SvgPicture.asset("assets/project-management.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+            SvgPicture.asset("assets/profile-user.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+          ],
+          backgroundColor: Colors.white,
+          color: Colors.blue,
+          animationCurve: Curves.easeInOut,
+          animationDuration: Duration(milliseconds: 300),
+          onTap: (index) {
+            setState(() {
+              widget.currentIndex = index;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
