@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     Timer(Duration(milliseconds: 2500), () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => BottomNav(currentIndex: 0,)),
+        MaterialPageRoute(builder: (context) => BottomNav(currentIndex: 2,)),
       );
     });
   }

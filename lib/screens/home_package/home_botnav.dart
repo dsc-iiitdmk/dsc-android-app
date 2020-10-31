@@ -2,6 +2,8 @@ import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeBotNav extends StatefulWidget {
   @override
@@ -9,43 +11,40 @@ class HomeBotNav extends StatefulWidget {
 }
 
 class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
-  Animation<int> _firstCharacterCount;
-  Animation<int> _secondCharacterCount;
-  AnimationController _firstTextController;
-  AnimationController _secondTextController;
-  
-  String _firstString = "Welcome to Developer Student Club";
-  String _secondString = "IIITDM Kurnool";
+  Animation<int> _totalCharacterCount;
+  AnimationController _totalTextController;
+
+  String _totalString = "Welcome to Developer Student Club IIITDM Kurnool";
 
   @override
   void initState() {
     super.initState();
-    _firstTextController = new AnimationController(
-      duration: const Duration(milliseconds: 4000),
-      vsync: this,
-    );
-    _secondTextController = new AnimationController(
+    _totalTextController = AnimationController(
       duration: const Duration(milliseconds: 4000),
       vsync: this,
     );
     setState(() {
-      _firstCharacterCount = new StepTween(begin: 0, end: _firstString.length)
-          .animate(
-          new CurvedAnimation(parent: _firstTextController, curve: Curves.easeIn));
-
-      _secondCharacterCount = new StepTween(begin: 0, end: _secondString.length)
-          .animate(
-          new CurvedAnimation(parent: _secondTextController, curve: Curves.easeIn));
+      _totalCharacterCount = StepTween(begin: 0, end: _totalString.length)
+        .animate(
+        CurvedAnimation(parent: _totalTextController, curve: Curves.easeIn)
+      );
+      _totalTextController.forward();
     });
-    _firstTextController.forward();
-    _secondTextController.forward();
   }
 
   @override
   void dispose() {
-    _firstTextController.dispose();
-    _secondTextController.dispose();
+    _totalTextController.dispose();
     super.dispose();
+  }
+
+  launchAnyMap({String lat = "17.3850", String long = "78.4867"}) async {
+    var mapSchema = 'geo:$lat,$long';
+    if (await canLaunch(mapSchema)) {
+      await launch(mapSchema);
+    } else {
+      throw 'Could not launch $mapSchema';
+    }
   }
 
   @override
@@ -53,6 +52,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
     return Scaffold(
       body: SafeArea(
         child: Container(
+          color: Colors.grey[100],
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -77,23 +77,17 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                               )
                           ),
                           SizedBox(height: 20.0.h,),
-                          _firstCharacterCount == null
-                              ? Text("Welcome to Developer Student Club", style: Font_Style.productsans_Bold(Colors.white, 50,))
-                              : new AnimatedBuilder(
-                            animation: _firstCharacterCount,
+                          _totalCharacterCount == null
+                              ? SizedBox(
+                            width: MediaQuery.of(context).size.width - 250.0.w,
+                            child: Text(_totalString, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Colors.white, 50,)))
+                              : AnimatedBuilder(
+                            animation: _totalCharacterCount,
                             builder: (BuildContext context, Widget child) {
-                              String text = _firstString.substring(0, _firstCharacterCount.value);
-                              return new Text(text, style: Font_Style.productsans_Bold(Colors.white, 50,));
-                            },
-                          ),
-                          SizedBox(height: 8.0.h,),
-                          _secondCharacterCount == null
-                              ? Text("IIITDM Kurnool", style: Font_Style.productsans_Bold(Colors.white, 50,))
-                              : new AnimatedBuilder(
-                            animation: _secondCharacterCount,
-                            builder: (BuildContext context, Widget child) {
-                              String text = _secondString.substring(0, _secondCharacterCount.value);
-                              return new Text(text, style: Font_Style.productsans_Bold(Colors.white, 50,));
+                              String _displayText = _totalString.substring(0, _totalCharacterCount.value);
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width - 250.0.w,
+                                  child: Text(_displayText, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Colors.white, 50,)));
                             },
                           ),
                         ],
@@ -115,7 +109,147 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-
+                SizedBox(height: 20.0.h,),
+                Card(
+                  elevation: 7.0,
+                  margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 70.0.w,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                        /*gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(255, 21,236,229),
+                            Color.fromARGB(255, 25,178,238),
+                          ],
+                        )*/
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text("About The Program", style: Font_Style.productsans_Bold(null, 55),),
+                        SizedBox(height: 20.0.h,),
+                        Text("Developer Student Club powered by Google developers "
+                            "is an initiative to grow their knowledge on "
+                            "developer technologies and more "
+                            "through peer to peer workshops and events and gain "
+                            "relevant industry experience."
+                            "Google collaborates with university students who are "
+                            "passionate about growing developer communities.", textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 7.0,
+                  margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 70.0.w,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        /*gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(255, 21,236,229),
+                            Color.fromARGB(255, 25,178,238),
+                          ],
+                        )*/
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text("What We Do At DSC IIITDMKL", style: Font_Style.productsans_Bold(null, 55),),
+                        SizedBox(height: 20.0.h,),
+                        Text("Developer Student Club, IIITDM Kurnool is inspired "
+                            "by Google Developers' family to develop "
+                            "projects involving various students "
+                            "from different backgrounds. We started our journey in Feb 2019. "
+                            "We try to engage student developers through hackathons and "
+                            "competitive programming contests. The motive is to create a local "
+                            "eco-system of programmers and developers in and around the institute. "
+                            "The technology awareness is our motive.", textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),)
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 70.0.w,
+                  padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 30.0.h),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Let's Connect", style: Font_Style.productsans_SemiBold(null, 55),),
+                      SizedBox(height: 22.0.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(15.0.h),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.blue,
+                            ),
+                            child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                          Container(
+                              padding: EdgeInsets.all(15.0.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                              ),
+                              child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                          Container(
+                              padding: EdgeInsets.all(15.0.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                              ),
+                              child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    launchAnyMap(lat: "15.761774", long: "78.036388");
+                  },
+                  child: Card(
+                    elevation: 7.0,
+                    margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+                    color: Colors.white.withOpacity(0.9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 70.0.w,
+                      padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 30.0.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 2.5,
+                        child: Column(
+                          children: <Widget>[
+                            Text("Visit IIITDM Kurnool", style: Font_Style.productsans_SemiBold(null, 55),),
+                            SizedBox(height: 22.0.h,),
+                            Text("Google maps(Required google cloud platform)", style: Font_Style.productsans_Regular(null, 50),)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0.h,),
               ],
             ),
           ),

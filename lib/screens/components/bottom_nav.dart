@@ -20,13 +20,13 @@ class _BottomNavState extends State<BottomNav> {
     super.initState();
     if (widget.currentIndex == null) {
       setState(() {
-        widget.currentIndex = 0;
+        widget.currentIndex = 2;
       });
     }
     _botNavList = [
-      HomeBotNav(),
       Container(color: Colors.blue,),
       Container(color: Colors.green,),
+      HomeBotNav(),
       Container(color: Colors.purple,),
       Container(color: Colors.yellow,),
     ];
@@ -42,14 +42,16 @@ class _BottomNavState extends State<BottomNav> {
         body: SafeArea(child: _botNavList[widget.currentIndex]),
         bottomNavigationBar: CurvedNavigationBar(
           items: <Widget>[
-            SvgPicture.asset("assets/home.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
             SvgPicture.asset("assets/calendar.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
             SvgPicture.asset("assets/group.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
+            SvgPicture.asset("assets/home.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
             SvgPicture.asset("assets/project-management.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
             SvgPicture.asset("assets/profile-user.svg", color: Colors.white, height: 50.0.h, width: 50.0.w,),
           ],
-          backgroundColor: Colors.white,
-          color: Colors.blue,
+          index: 2,
+          height: 140.0.h,
+          backgroundColor: Colors.grey[100],
+          color: Colors.cyan[900],
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
           onTap: (index) {
