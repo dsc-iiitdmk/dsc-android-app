@@ -14,7 +14,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
   Animation<int> _totalCharacterCount;
   AnimationController _totalTextController;
 
-  String _totalString = "Welcome to Developer Student Club IIITDM Kurnool";
+  String _totalString = "Developer Student Club IIITDM Kurnool";
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  launchAnyMap({String lat = "17.3850", String long = "78.4867"}) async {
+  launchAnyMapRelated({String lat = "17.3850", String long = "78.4867"}) async {
     var mapSchema = 'geo:$lat,$long';
     if (await canLaunch(mapSchema)) {
       await launch(mapSchema);
@@ -60,51 +60,62 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                 Stack(
                   children: <Widget>[
                     Container(
-                      color: Colors.blue,
                       height: MediaQuery.of(context).size.height / 3 - 70.0.h,
                       width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              width: 320.0.w,
-                              height: 120.0.h,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: AssetImage("assets/logo.png")
-                                  )
-                              )
-                          ),
-                          SizedBox(height: 20.0.h,),
-                          _totalCharacterCount == null
-                              ? SizedBox(
-                            width: MediaQuery.of(context).size.width - 250.0.w,
-                            child: Text(_totalString, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Colors.white, 50,)))
-                              : AnimatedBuilder(
-                            animation: _totalCharacterCount,
-                            builder: (BuildContext context, Widget child) {
-                              String _displayText = _totalString.substring(0, _totalCharacterCount.value);
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width - 250.0.w,
-                                  child: Text(_displayText, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Colors.white, 50,)));
-                            },
-                          ),
-                        ],
-                      ),
+                      color: Colors.white,
+                      child: SvgPicture.asset("assets/home_bg.svg", height: MediaQuery.of(context).size.height / 3 - 70.0.h, width: MediaQuery.of(context).size.width,),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(22.0.h),
-                      child: Container(
-                          width: 180.0.w,
-                          height: 180.0.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: AssetImage("assets/iiitdmk-logo.png")
-                              )
-                          )
+                      padding: EdgeInsets.only(right: 18.0.w, top: 18.0.h),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                            width: 150.0.w,
+                            height: 150.0.h,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.fitWidth,
+                                    image: AssetImage("assets/iiitdmk-logo.png")
+                                )
+                            )
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 3 - 70.0.h,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                                width: 280.0.w,
+                                height: 100.0.h,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage("assets/logo.png")
+                                    )
+                                )
+                            ),
+                            SizedBox(height: 20.0.h,),
+                            _totalCharacterCount == null
+                                ? SizedBox(
+                              width: MediaQuery.of(context).size.width - 520.0.w,
+                              child: Text(_totalString, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)))
+                                : AnimatedBuilder(
+                              animation: _totalCharacterCount,
+                              builder: (BuildContext context, Widget child) {
+                                String _displayText = _totalString.substring(0, _totalCharacterCount.value);
+                                return SizedBox(
+                                  width: MediaQuery.of(context).size.width - 520.0.w,
+                                    child: Text(_displayText, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)));
+                              },
+                            ),
+                            SizedBox(height: 50.0.h,),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -122,19 +133,11 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
-                        /*gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color.fromARGB(255, 21,236,229),
-                            Color.fromARGB(255, 25,178,238),
-                          ],
-                        )*/
                     ),
                     child: Column(
                       children: <Widget>[
-                        Text("About The Program", style: Font_Style.productsans_Bold(null, 55),),
-                        SizedBox(height: 20.0.h,),
+                        Text("About The Program", style: Font_Style.productsans_Bold(null, 60),),
+                        SizedBox(height: 50.0.h,),
                         Text("Developer Student Club powered by Google developers "
                             "is an initiative to grow their knowledge on "
                             "developer technologies and more "
@@ -158,19 +161,11 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        /*gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color.fromARGB(255, 21,236,229),
-                            Color.fromARGB(255, 25,178,238),
-                          ],
-                        )*/
                     ),
                     child: Column(
                       children: <Widget>[
-                        Text("What We Do At DSC IIITDMKL", style: Font_Style.productsans_Bold(null, 55),),
-                        SizedBox(height: 20.0.h,),
+                        Text("What We Do At DSC IIITDMKL", style: Font_Style.productsans_Bold(null, 60),),
+                        SizedBox(height: 50.0.h,),
                         Text("Developer Student Club, IIITDM Kurnool is inspired "
                             "by Google Developers' family to develop "
                             "projects involving various students "
@@ -183,15 +178,16 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
+                SizedBox(height: 20.0.h,),
                 Container(
                   width: MediaQuery.of(context).size.width - 70.0.w,
                   padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 30.0.h),
                   child: Column(
                     children: <Widget>[
-                      Text("Let's Connect", style: Font_Style.productsans_SemiBold(null, 55),),
-                      SizedBox(height: 22.0.h,),
+                      Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
+                      SizedBox(height: 30.0.h,),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Container(
                             padding: EdgeInsets.all(15.0.h),
@@ -219,9 +215,10 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
+                SizedBox(height: 20.0.h,),
                 InkWell(
                   onTap: () {
-                    launchAnyMap(lat: "15.761774", long: "78.036388");
+                    launchAnyMapRelated(lat: "15.761774", long: "78.036388");
                   },
                   child: Card(
                     elevation: 7.0,
