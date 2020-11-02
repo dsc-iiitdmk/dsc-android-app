@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeBotNav extends StatefulWidget {
   @override
@@ -15,6 +18,15 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
   AnimationController _totalTextController;
 
   String _totalString = "Developer Student Club IIITDM Kurnool";
+
+  static final MarkerId _markerId = MarkerId("shopLocationMarkerId");
+
+  Completer<GoogleMapController> _googleMapsController = Completer();
+
+  CameraPosition _camPosition = CameraPosition(
+    target: LatLng(15.761774, 78.036388),
+    zoom: 14.4746,
+  );
 
   @override
   void initState() {
@@ -38,7 +50,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  launchAnyMapRelated({String lat = "17.3850", String long = "78.4867"}) async {
+  launchAnyMapRelated({String lat = "15.761774", String long = "78.036388"}) async {
     var mapSchema = 'geo:$lat,$long';
     if (await canLaunch(mapSchema)) {
       await launch(mapSchema);
@@ -129,7 +141,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 70.0.w,
+                    width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -157,7 +169,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 70.0.w,
+                    width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -178,71 +190,94 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0.h,),
-                Container(
-                  width: MediaQuery.of(context).size.width - 70.0.w,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 30.0.h),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
-                      SizedBox(height: 30.0.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(15.0.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue,
-                            ),
-                            child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                          Container(
-                              padding: EdgeInsets.all(15.0.h),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                          Container(
-                              padding: EdgeInsets.all(15.0.h),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.0.h,),
-                InkWell(
-                  onTap: () {
-                    launchAnyMapRelated(lat: "15.761774", long: "78.036388");
-                  },
-                  child: Card(
-                    elevation: 7.0,
-                    margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
-                    color: Colors.white.withOpacity(0.9),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 70.0.w,
-                      padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 30.0.h),
+                SizedBox(height: 30.0.h,),
+                Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
+                SizedBox(height: 30.0.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(15.0.h),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
                       ),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 2.5,
-                        child: Column(
+                      child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    Container(
+                        padding: EdgeInsets.all(15.0.h),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                        ),
+                        child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    Container(
+                        padding: EdgeInsets.all(15.0.h),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                        ),
+                        child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                  ],
+                ),
+                SizedBox(height: 30.0.h,),
+                Card(
+                  elevation: 7.0,
+                  margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+                  color: Colors.white.withOpacity(0.9),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 4.0.h,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 30.0.h,),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        Column(
                           children: <Widget>[
-                            Text("Visit IIITDM Kurnool", style: Font_Style.productsans_SemiBold(null, 55),),
+                            Text("Visit IIITDM Kurnool", style: Font_Style.productsans_Bold(null, 60),),
                             SizedBox(height: 22.0.h,),
-                            Text("Google maps(Required google cloud platform)", style: Font_Style.productsans_Regular(null, 50),)
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+                                child: GoogleMap(
+                                  onMapCreated: (GoogleMapController controller) {
+                                    _googleMapsController.complete(controller);
+                                  },
+                                  initialCameraPosition: _camPosition,
+                                  scrollGesturesEnabled: true,
+                                  tiltGesturesEnabled: true,
+                                  trafficEnabled: false,
+                                  compassEnabled: true,
+                                  rotateGesturesEnabled: true,
+                                  //myLocationEnabled: true,
+                                  zoomGesturesEnabled: true,
+                                  zoomControlsEnabled: true,
+                                  liteModeEnabled: true,
+                                  mapType: MapType.hybrid,
+                                  markers: {
+                                    Marker(
+                                        markerId: _markerId,
+                                        position: LatLng(15.761774, 78.036388)),
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 8.0.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    launchAnyMapRelated(lat: "15.761774", long: "78.036388");
+                                  },
+                                    child: Icon(Icons.directions, color: Font_Style.primaryColor, size: 26.0,)))),
+                      ],
                     ),
                   ),
                 ),

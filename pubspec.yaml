@@ -32,6 +32,7 @@ dependencies:
   curved_navigation_bar: ^0.3.4
   flutter_svg:
   url_launcher:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:
