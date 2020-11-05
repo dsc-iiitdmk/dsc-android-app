@@ -30,6 +30,7 @@
 .pub/
 /build/
 /android/app/src/main/AndroidManifest.xml
+/ios/Runner/AppDelegate.m
 
 # Web related
 lib/generated_plugin_registrant.dart

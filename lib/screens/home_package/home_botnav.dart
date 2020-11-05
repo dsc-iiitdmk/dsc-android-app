@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeBotNav extends StatefulWidget {
@@ -48,15 +47,6 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
   void dispose() {
     _totalTextController.dispose();
     super.dispose();
-  }
-
-  launchAnyMapRelated({String lat = "15.761774", String long = "78.036388"}) async {
-    var mapSchema = 'geo:$lat,$long';
-    if (await canLaunch(mapSchema)) {
-      await launch(mapSchema);
-    } else {
-      throw 'Could not launch $mapSchema';
-    }
   }
 
   @override
@@ -190,28 +180,28 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.0.h,),
+                SizedBox(height: 40.0.h,),
                 Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
                 SizedBox(height: 30.0.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.all(15.0.h),
+                      padding: EdgeInsets.all(18.0.h),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.blue,
                       ),
                       child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
                     Container(
-                        padding: EdgeInsets.all(15.0.h),
+                        padding: EdgeInsets.all(18.0.h),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.blue,
                         ),
                         child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
                     Container(
-                        padding: EdgeInsets.all(15.0.h),
+                        padding: EdgeInsets.all(18.0.h),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.blue,
@@ -219,7 +209,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                         child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
                   ],
                 ),
-                SizedBox(height: 30.0.h,),
+                SizedBox(height: 40.0.h,),
                 Card(
                   elevation: 7.0,
                   margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
@@ -234,49 +224,36 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
-                    child: Stack(
+                    child: Column(
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Text("Visit IIITDM Kurnool", style: Font_Style.productsans_Bold(null, 60),),
-                            SizedBox(height: 22.0.h,),
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-                                child: GoogleMap(
-                                  onMapCreated: (GoogleMapController controller) {
-                                    _googleMapsController.complete(controller);
-                                  },
-                                  initialCameraPosition: _camPosition,
-                                  scrollGesturesEnabled: true,
-                                  tiltGesturesEnabled: true,
-                                  trafficEnabled: false,
-                                  compassEnabled: true,
-                                  rotateGesturesEnabled: true,
-                                  //myLocationEnabled: true,
-                                  zoomGesturesEnabled: true,
-                                  zoomControlsEnabled: true,
-                                  liteModeEnabled: true,
-                                  mapType: MapType.hybrid,
-                                  markers: {
-                                    Marker(
-                                        markerId: _markerId,
-                                        position: LatLng(15.761774, 78.036388)),
-                                  },
-                                ),
-                              ),
+                        Text("Visit IIITDM Kurnool", style: Font_Style.productsans_Bold(null, 60),),
+                        SizedBox(height: 22.0.h,),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+                            child: GoogleMap(
+                              onMapCreated: (GoogleMapController controller) {
+                                _googleMapsController.complete(controller);
+                              },
+                              initialCameraPosition: _camPosition,
+                              scrollGesturesEnabled: true,
+                              tiltGesturesEnabled: true,
+                              trafficEnabled: false,
+                              compassEnabled: true,
+                              rotateGesturesEnabled: true,
+                              //myLocationEnabled: true,
+                              zoomGesturesEnabled: true,
+                              zoomControlsEnabled: true,
+                              liteModeEnabled: true,
+                              mapType: MapType.hybrid,
+                              markers: {
+                                Marker(
+                                    markerId: _markerId,
+                                    position: LatLng(15.761774, 78.036388)),
+                              },
                             ),
-                          ],
+                          ),
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 8.0.w),
-                                child: InkWell(
-                                  onTap: () {
-                                    launchAnyMapRelated(lat: "15.761774", long: "78.036388");
-                                  },
-                                    child: Icon(Icons.directions, color: Font_Style.primaryColor, size: 26.0,)))),
                       ],
                     ),
                   ),
