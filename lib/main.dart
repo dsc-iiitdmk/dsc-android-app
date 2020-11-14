@@ -1,3 +1,4 @@
+import 'package:dsc_iiitdmkl/screens/events_package/events_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/welcome_package/welcome_screen.dart';
 import 'package:flutter/material.dart';

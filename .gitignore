@@ -29,7 +29,7 @@
 .pub-cache/
 .pub/
 /build/
-/android/app/src/main/AndroidManifest.xml
+/android/app/src/debug/AndroidManifest.xml
 /ios/Runner/AppDelegate.m
 
 # Web related

@@ -124,11 +124,11 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                 ),
                 SizedBox(height: 20.0.h,),
                 Card(
-                  elevation: 7.0,
+                  elevation: 3.0,
                   margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -156,7 +156,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                   margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width,

@@ -1,3 +1,4 @@
+import 'package:dsc_iiitdmkl/screens/events_package/events_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,8 +25,8 @@ class _BottomNavState extends State<BottomNav> {
       });
     }
     _botNavList = [
+      EventsBotNav(),
       Container(color: Colors.blue,),
-      Container(color: Colors.green,),
       HomeBotNav(),
       Container(color: Colors.purple,),
       Container(color: Colors.yellow,),
