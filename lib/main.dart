@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'ProductSans',
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.grey[50],
         primaryColor: Font_Style.primaryColor,
         cursorColor: Font_Style.secondaryColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
