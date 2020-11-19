@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
-import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
-import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,14 +39,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     _controller.forward();
 
     _circularController = AnimationController(
-        duration: const Duration(milliseconds: 1500), vsync: this);
+        duration: const Duration(milliseconds: 1300), vsync: this);
     _circularController.repeat();
 
     Timer(Duration(milliseconds: 2500), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BottomNav(currentIndex: 2,)),
-      );
+      Navigator.pushNamed(context, "login_register");
     });
   }
 

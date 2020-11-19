@@ -7,36 +7,25 @@ class Font_Style {
   static Color secondaryColor=Color.fromRGBO(7,9,32, 1).withOpacity(0.5);
 
 //to set the label for input text field
-  static InputDecoration setLable(var lable, var sufix, BuildContext context) {
+  static InputDecoration setLable(String label, Icon prefix, var suffix, BuildContext context) {
     return InputDecoration(
       //isDense: true,
-        labelText:lable,
+        labelText:label,
         counterText: "",
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: secondaryColor, width: 1.5,),
-        ),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1.5),
-      ),
-      disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1.5),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1.5),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1.5),
-      ),
-      border: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1.5),
-      ),
-        contentPadding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 10.0.w),
-        labelStyle: productsans_medium(secondaryColor, 12.0),
-      suffixIcon: sufix,
+        focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      disabledBorder: InputBorder.none,
+      errorBorder: InputBorder.none,
+      focusedErrorBorder: InputBorder.none,
+      border: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 8.0.w),
+        labelStyle: productsans_medium(secondaryColor, 45.0),
+      suffixIcon: suffix == null ? null : suffix,
+      prefixIcon: prefix == null ? null : prefix,
     );
   }
   static TextStyle textfield_style(){
-    return productsans_medium(secondaryColor, null);
+    return productsans_medium(primaryColor.withOpacity(0.7), 50);
   }
   static TextStyle productsans_black(Color primary,double f1_32){
     return TextStyle(

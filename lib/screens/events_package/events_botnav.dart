@@ -63,9 +63,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                       _eventsTabController.index = x;
                     },
                     tabs: <Widget>[
-                      Text("Upcoming", textAlign: TextAlign.center, textDirection: TextDirection.ltr, overflow: TextOverflow.visible,),
-                      Text("Ongoing", textAlign: TextAlign.center, textDirection: TextDirection.ltr, overflow: TextOverflow.visible,),
                       Text("Past", textAlign: TextAlign.center, textDirection: TextDirection.ltr, overflow: TextOverflow.visible,),
+                      Text("Ongoing", textAlign: TextAlign.center, textDirection: TextDirection.ltr, overflow: TextOverflow.visible,),
+                      Text("Upcoming", textAlign: TextAlign.center, textDirection: TextDirection.ltr, overflow: TextOverflow.visible,),
                     ],
                   ),
                 ),
@@ -133,7 +133,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
       ),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: _height / 5,
+        height: _height / 5.9,
         alignment: Alignment.center,
         child: Text("AI/ML COMPETITIONS AND QUIZ", style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: "ProductSans", fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
         decoration: BoxDecoration(

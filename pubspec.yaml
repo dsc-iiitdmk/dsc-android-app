@@ -33,6 +33,9 @@ dependencies:
   flutter_svg:
   url_launcher:
   google_maps_flutter:
+  flutter_vector_icons: ^0.2.1
+  email_validator: ^1.0.6
+  keyboard_avoider: ^0.1.2
 
 dev_dependencies:
   flutter_test:
