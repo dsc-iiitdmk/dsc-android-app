@@ -1,5 +1,5 @@
-import 'package:dsc_iiitdmkl/screens/events_package/events_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
+import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/login_register.dart';
 import 'package:dsc_iiitdmkl/screens/welcome_package/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +28,9 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => WelcomeScreen(),
-        'homebotnav': (context) => HomeBotNav(),
+        'home_bot_nav': (context) => HomeBotNav(),
         'login_register': (context) => LoginRegister(),
+        'forgot_pass': (context) => ForgotPassword(),
       },
       initialRoute: '/',
     );

@@ -1,5 +1,6 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
-import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
+import 'package:dsc_iiitdmkl/services/email_pass_auth_firebase.dart';
+import 'package:dsc_iiitdmkl/services/google_auth_firebase.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -7,6 +8,7 @@ import 'dart:math' as math;
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 class LoginRegister extends StatefulWidget {
   @override
@@ -45,7 +47,19 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
   TextEditingController _passwordTextController = new TextEditingController();
   TextEditingController _userNameTextController = new TextEditingController();
 
+  ButtonState stateOnlyText = ButtonState.idle;
+  ButtonState stateTextWithIcon = ButtonState.idle;
+  String response;
+
+  bool isLoadingGoogle=false;
   bool _isObscurePressed = true;
+
+  void spincallbackgoogle(val,e){
+    setState(() {
+      isLoadingGoogle = val;
+      response = e;
+    });
+  }
 
   @override
   void initState() {
@@ -173,7 +187,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       children: <Widget>[
         InkWell(
           onTap: (){
-            /////////////////////////////////////
+            GoogleAuth().handleGoogleSignIn(context,spincallbackgoogle);
           },
           child: Container(
             width: 128.h,
@@ -408,16 +422,12 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
                   onTap: () {
                     if(_currentPage == "Register") {
                       if (_registerFormKey.currentState.validate()) {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>
-                              BottomNav(currentIndex: 2,)),);
+                        onRegisterPress();
                       }
                     }
                     else {
                       if (_loginFormKey.currentState.validate()) {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>
-                              BottomNav(currentIndex: 2,)),);
+                        onLoginPress();
                       }
                     }
                   },
@@ -434,19 +444,6 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
               ),
             ),
           ),
-          if (_currentPage == 'Login')
-            Positioned(
-              right: 40,
-              bottom: -50,
-              child: Text(
-                'Forgot password?',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                  color: Color.fromRGBO(203, 207, 218, 1),
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -514,7 +511,32 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
           Expanded(
             child: buildInputsAndButton(context),
           ),
-          buildNavButton(),
+          Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              buildNavButton(),
+              if (_currentPage == 'Login')
+                Positioned(
+                  right: 40,
+                  bottom: 45,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "forgot_pass");
+                    },
+                    child: Container(
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromRGBO(203, 207, 218, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
           SizedBox(height: 30.0.h,),
           Text("or continue with", style: Font_Style.productsans_medium(null, 56),),
           SizedBox(height: 30.0.h,),
@@ -580,6 +602,59 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
         ),
       ),
     );
+  }
+
+  void onLoginPress(){
+    FocusScope.of(context).requestFocus(FocusNode());
+    if(_loginFormKey.currentState.validate()) {
+      setState(() {
+        stateOnlyText=  ButtonState.loading;
+      });
+      EmailPasswordAuth().signInWithEmailAndPassword(
+          _emailTextController.text, _passwordTextController.text, context,buttonCallback).catchError((e){
+      });
+    }else{
+      setState(() {
+        stateOnlyText=  ButtonState.fail;
+      });
+      Timer(Duration(seconds: 4), (){
+        setState(() {
+          stateOnlyText=  ButtonState.idle;
+        });
+      });
+    }
+  }
+
+  void onRegisterPress(){
+    FocusScope.of(context).requestFocus(FocusNode());
+    if(_registerFormKey.currentState.validate()) {
+      setState(() {
+        stateOnlyText=  ButtonState.loading;
+      });
+      EmailPasswordAuth().signUpWithEmailAndPassword(
+          _emailTextController.text, _passwordTextController.text, _userNameTextController.text, context, buttonCallback).catchError((e){
+      });
+    }else{
+      setState(() {
+        stateOnlyText=  ButtonState.fail;
+      });
+      Timer(Duration(seconds: 4), (){
+        setState(() {
+          stateOnlyText=  ButtonState.idle;
+        });
+      });
+    }
+  }
+  
+  void buttonCallback(buttonState,response) {
+    setState(() {
+      if(response!=null) {
+        response = response;
+      }
+      if(buttonState!=null) {
+        stateOnlyText = buttonState;
+      }
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,9 +43,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         duration: const Duration(milliseconds: 1300), vsync: this);
     _circularController.repeat();
 
+    initializeFirebase();
+
     Timer(Duration(milliseconds: 2500), () {
       Navigator.pushNamed(context, "login_register");
     });
+  }
+
+  Future initializeFirebase() {
+    Firebase.initializeApp();
   }
 
   @override
