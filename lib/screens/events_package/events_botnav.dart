@@ -141,7 +141,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
           image: DecorationImage(
             colorFilter: ColorFilter.mode(Colors.black.withAlpha(50), BlendMode.srcATop),
             fit: BoxFit.cover,
-            image: Image.network("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc4", width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
+            image: Image.network("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc", width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
           ),
         ),
       ),
