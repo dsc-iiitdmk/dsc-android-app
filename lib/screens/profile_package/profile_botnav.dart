@@ -14,8 +14,6 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
   @override
   void initState() {
     UserDetails.getUserId(context);
-
-    print("init");
     super.initState();
   }
 
@@ -32,6 +30,7 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  /////////////////////////////////////////////////////
                   print(UserDetails.firebaseUser);
                 },
                 child: Stack(
@@ -71,9 +70,9 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Shoyab Azmal", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_ExtraBold(null, 60.0),),
+                    Text("${UserDetails.firebaseUser.displayName}", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_ExtraBold(null, 60.0),),
                     SizedBox(height: 8.h,),
-                    Text("shaikshoyab01@gmail.com", textDirection: TextDirection.ltr, textAlign: TextAlign.left, overflow: TextOverflow.clip, style: Font_Style.productsans_Regular(null, 46.0),)
+                    Text("${UserDetails.firebaseUser.email}", textDirection: TextDirection.ltr, textAlign: TextAlign.left, overflow: TextOverflow.clip, style: Font_Style.productsans_Regular(null, 46.0),)
                   ],
                 ),
               ),
