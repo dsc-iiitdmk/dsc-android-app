@@ -1,6 +1,8 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/email_pass_auth_firebase.dart';
 import 'package:dsc_iiitdmkl/services/google_auth_firebase.dart';
+import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -187,7 +189,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       children: <Widget>[
         InkWell(
           onTap: (){
-            GoogleAuth().handleGoogleSignIn(context,spincallbackgoogle);
+            GoogleAuth.handleGoogleSignIn(context,spincallbackgoogle);
           },
           child: Container(
             width: 128.h,
@@ -523,16 +525,19 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
                     onTap: () {
                       Navigator.pushNamed(context, "forgot_pass");
                     },
-                    child: Container(
-                      child: Text(
-                        'Forgot password?',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromRGBO(203, 207, 218, 1),
-                        ),
-                      ),
-                    ),
+                    child: AnimatedBuilder(
+                        animation: animationControllerInputs,
+                        child: Container(
+                          child: Text('Forgot password?', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Color.fromRGBO(203, 207, 218, 1),),),),
+                        builder: (context, child) {
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Transform.translate(
+                              offset: Offset(animationInputs.value, 0),
+                              child: child,
+                            ),
+                          );
+                        }),
                   ),
                 ),
             ],
@@ -610,7 +615,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       setState(() {
         stateOnlyText=  ButtonState.loading;
       });
-      EmailPasswordAuth().signInWithEmailAndPassword(
+      EmailPasswordAuth.signInWithEmailAndPassword(
           _emailTextController.text, _passwordTextController.text, context,buttonCallback).catchError((e){
       });
     }else{
@@ -631,7 +636,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       setState(() {
         stateOnlyText=  ButtonState.loading;
       });
-      EmailPasswordAuth().signUpWithEmailAndPassword(
+      EmailPasswordAuth.signUpWithEmailAndPassword(
           _emailTextController.text, _passwordTextController.text, _userNameTextController.text, context, buttonCallback).catchError((e){
       });
     }else{

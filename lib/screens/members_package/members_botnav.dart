@@ -73,7 +73,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
         borderRadius: BorderRadius.circular(20),
       ),
       child: Container(
-        height: height/6,
+        height: height/6.3,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
               borderRadius: BorderRadius.circular(20),
               child: Image.network("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc", fit: BoxFit.fill , height: height /6,),
             ),),
-            Expanded(flex: 3, child: Container(
+            Expanded(flex: 4, child: Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

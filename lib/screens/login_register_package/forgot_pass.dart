@@ -1,5 +1,7 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/email_pass_auth_firebase.dart';
+import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController _emailTextController = new TextEditingController();
   ButtonState stateOnlyText = ButtonState.idle;
   final _resetFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    UserDetails.getUserId(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +136,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       setState(() {
         stateOnlyText = ButtonState.loading;
       });
-      EmailPasswordAuth().resetPassword(_emailTextController.text, context).then((
+      EmailPasswordAuth.resetPassword(_emailTextController.text, context).then((
           value) {
         setState(() {
           stateOnlyText = ButtonState.idle;
@@ -138,7 +147,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             content: "You will receive an email to reset password if your email is registered with us.",
             actions: [popup.button(label: 'close',
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if(UserDetails.firebaseUser != null) {
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>
+                          BottomNav(currentIndex: 4,)),);
+                  }
+                  else {
+                    Navigator.of(context).pop();
+                  }
                 }),
             ],
             barrierDismissible: false,

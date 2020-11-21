@@ -1,27 +1,25 @@
 import 'dart:async';
 
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
+import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:flutter/material.dart';
 
 class EmailPasswordAuth {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future signInWithEmailAndPassword(String email, String password, BuildContext context, callback) async {
+  static Future signInWithEmailAndPassword(String email, String password, BuildContext context, callback) async {
     try{
       User firebaseUser = (await _auth.signInWithEmailAndPassword(email: email, password: password)).user;
-      if(firebaseUser!=null&&firebaseUser.emailVerified){
-        //AuthCommon().on_login_succeded(firebaseUser,context);
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>
-              BottomNav(currentIndex: 2,)),);
-      }else{ //////////////////////////
+      if(firebaseUser != null && firebaseUser.emailVerified) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav(currentIndex: 2,)),);
+      }
+      else{
         print("Email not verified yet");
         await firebaseUser.sendEmailVerification();
         callback(ButtonState.success,"1");
-
         final popup=BeautifulPopup(template: TemplateNotification,context: context);
         popup.show(title: "Email Verification",content: "We have sent a verification link to your email please verify to proceed",
             actions:[popup.button(label: 'Close',
@@ -36,9 +34,9 @@ class EmailPasswordAuth {
                   await user.reload();
                   user=await _auth.currentUser;
                   print(user.emailVerified);
-                  if(user!=null&&user.emailVerified){
+                  if(user != null && user.emailVerified){
                     Navigator.of(context).pop();
-                    //AuthCommon().on_login_succeded(user,context);
+                    UserDetails.getUserId(context);
                     Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
                           BottomNav(currentIndex: 2,)),);
@@ -47,10 +45,10 @@ class EmailPasswordAuth {
                   }
                 },
               )
-            ],barrierDismissible: false,close: Container() );
-
+            ],barrierDismissible: false,close: Container()
+        );
       }
-    }catch(e){
+    }catch(e) {
       final errorpopup=BeautifulPopup(template: TemplateNotification,context: context,);
       errorpopup.show(title: "invalid field",content: "No user exists with current fields",
           actions:[errorpopup.button(label: 'Close',
@@ -64,7 +62,7 @@ class EmailPasswordAuth {
     }
   }
 
-  Future signUpWithEmailAndPassword(String email, String password, String name, BuildContext context, callback) async {
+  static Future signUpWithEmailAndPassword(String email, String password, String name, BuildContext context, callback) async {
     try{
       var result = await _auth.createUserWithEmailAndPassword(email: email, password: password).catchError((e){
         print(e);
@@ -78,11 +76,10 @@ class EmailPasswordAuth {
             ] ,barrierDismissible: false,close: Container());
 
       });
-      if(result!=null){
+      if(result != null){
         User firebaseUser = result.user;
         await firebaseUser.sendEmailVerification();
         callback(ButtonState.success,"1");
-
         final popup=BeautifulPopup(template: TemplateNotification,context: context);
         popup.show(title: "Email Verification",content: "We have sent a verification link to your email please verify to proceed",
             actions:[popup.button(label: 'Close',
@@ -95,38 +92,36 @@ class EmailPasswordAuth {
                 onPressed: () async{
                   var user= await _auth.currentUser;
                   await user.reload();
-                  user=await _auth.currentUser;
+                  user = await _auth.currentUser;
                   print(user.emailVerified);
-                  if(user!=null&&user.emailVerified){
+                  if(user != null && user.emailVerified){
                     user.updateProfile(displayName: name);
-                    //AuthCommon().on_login_succeded(user,context);
+                    UserDetails.getUserId(context);
                     Navigator.of(context).pop();
                     Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
                           BottomNav(currentIndex: 2,)),);
-                  }else{ //////////////////////////
+                  }else{
                     print("Email not verified yet");
                   }
                 },
               )
             ],barrierDismissible: false,close: Container() );
       }
-
-      //return _userFromFirebaseUser(firebaseUser);
     }catch(e){
       print(e.toString());
     }
   }
-  Future resetPassword(String email,context) async{
+  static Future resetPassword(String email,context) async{
     try{
       await _auth.sendPasswordResetEmail(email: email);
 
     }catch(e){
-
       print(e.toString());
     }
   }
-  Future signOut() async{
+
+  static Future signOut() async{
     try{
       return await _auth.signOut();
     }catch(e){

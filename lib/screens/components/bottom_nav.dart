@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/screens/events_package/events_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/members_package/members_botnav.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/profile_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/projects_package/projects_botnav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class _BottomNavState extends State<BottomNav> {
       MembersBotNav(),
       HomeBotNav(),
       ProjectsBotNav(),
-      Container(color: Colors.yellow,),
+      ProfileBotNav(),
     ];
   }
 

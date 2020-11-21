@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
+import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +48,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     initializeFirebase();
 
     Timer(Duration(milliseconds: 2500), () {
-      Navigator.pushNamed(context, "login_register");
+      navigateToScreen();
     });
+  }
+
+  void navigateToScreen() {
+    UserDetails.getUserId(context);
+    if(UserDetails.firebaseUser != null) {
+      Navigator.push(context,
+        MaterialPageRoute(builder: (context) =>
+            BottomNav(currentIndex: 2,)),);
+    }
+    else {
+      Navigator.pushNamed(context, "login_register");
+    }
   }
 
   Future initializeFirebase() {
