@@ -1,30 +1,50 @@
 class Profile{
-  static String name, email, phone, state, dist;
+  String name, email, phone, state, dist;
 
-  static String getName(){
+  String getName(){
     return name;
   }
 
-  static String getEmail(){
+  String getEmail(){
     return email;
   }
 
-  static String getPhone(){
+  String getPhone(){
     return phone;
   }
 
-  static String getState(){
+  String getState(){
     return state;
   }
 
-  static String getDist(){
+  String getDist(){
     return dist;
   }
 
-  static bool isThisOurCollegeStudent(){
+  void setName(String name){
+    this.name = name;
+  }
+
+  void setEmail(String email){
+    this.email = email;
+  }
+
+  void setPhone(String phone){
+    this.phone = phone;
+  }
+
+  void setState(String state){
+    this.state = state;
+  }
+
+  void setDist(String dist){
+    this.dist = dist;
+  }
+
+  bool isThisOurCollegeStudent(){
     return email.endsWith("@iiitk.ac.in");
   }
 
   Profile();
-  //Profile.load(this.name, this.email, this.phone, this.state, this.dist);
+  Profile.load(this.name, this.email, this.phone, this.state, this.dist);
 }
