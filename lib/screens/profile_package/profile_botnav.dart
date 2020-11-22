@@ -1,6 +1,4 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
-import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
-import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +19,7 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50.0.w),
+      padding: EdgeInsets.symmetric(horizontal: 30.0.w),
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
@@ -32,13 +30,12 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
               GestureDetector(
                 onTap: () {
                   /////////////////////////////////////////////////////
-                  print(UserDetails.firebaseUser);
                 },
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      width: 85,
-                      height: 85,
+                      width: 87,
+                      height: 87,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
@@ -80,10 +77,10 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
             ],
           ),
           Spacer(flex: 32,),
-          _list_title("ACCOUNT",Icons.person_outline),
-          _profile_home_list_item("My Profile", context),
-          _profile_home_list_item("My Registrations", context),
-          _profile_home_list_item("Change Password", context),
+          _listTitle("ACCOUNT",Icons.person_outline),
+          _profileHomeListItem("My Profile", context),
+          _profileHomeListItem("My Registrations", context),
+          _profileHomeListItem("Change Password", context),
           Spacer(flex: 5,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -106,11 +103,11 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
           SizedBox(
             height: 40.5.h,
           ),
-          _profile_home_list_item("Developers", context),
-          _profile_home_list_item("Share with Friends", context),
-          _profile_home_list_item("Rate App", context),
-          _profile_home_list_item("Privacy Policy", context),
-          Spacer(flex: 70,),
+          _profileHomeListItem("Developers", context),
+          _profileHomeListItem("Share with Friends", context),
+          _profileHomeListItem("Rate App", context),
+          _profileHomeListItem("Privacy Policy", context),
+          Spacer(flex: 60,),
           RaisedButton(
             onPressed: logout,
             textColor: Colors.white,
@@ -119,32 +116,26 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
                 vertical: 8.0, horizontal: 25.0),
             child: Text(
               "Logout",
-              style: Font_Style.productsans_medium(Colors.white, 50),
+              style: Font_Style.productsans_Bold(Colors.white, 52),
             ),
           ),
-          Spacer(flex: 30,),
+          Spacer(flex: 20,),
         ],
       ),
     );
   }
 
-  Widget _profile_home_list_item(String title, context){
+  Widget _profileHomeListItem(String title, context){
     return Padding(
-      padding: EdgeInsets.only(bottom: 25.0.h),
+      padding: EdgeInsets.only(bottom: 42.0.h,),
       child: InkWell(
         onTap: () {
           switch(title) {
             case "Change Password":
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ForgotPassword()),
-              );
+              Navigator.pushNamed(context, "forgot_pass");
               break;
             case "My Profile":
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ProfileEdit()),
-              );
+              Navigator.pushNamed(context, "profile_edit");
               break;
             default:
               print("default");
@@ -152,12 +143,12 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
         },
         child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(title, textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_medium(Font_Style.secondaryColor, 48.0),)),
+            child: Text(title, textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_medium(Font_Style.secondaryColor, 50.0),)),
       ),
     );
   }
 
-  Widget _list_title(String title, IconData icon){
+  Widget _listTitle(String title, IconData icon){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

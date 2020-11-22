@@ -299,7 +299,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
                               controller: _emailTextController,
                               maxLength: 45,
                               decoration:
-                              Font_Style.setLable("Email Address", null, null, context),
+                              Font_Style.setLabel("Email Address", null, null, context),
                               keyboardType: TextInputType.emailAddress,
                               cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
                               style:  Font_Style.textfield_style(),
@@ -333,7 +333,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
                               maxLength: 25,
                               keyboardType: TextInputType.text,
                               decoration:
-                              Font_Style.setLable("Password", null,
+                              Font_Style.setLabel("Password", null,
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -379,7 +379,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
                                 controller: _userNameTextController,
                                 maxLength: 30,
                                 decoration:
-                                Font_Style.setLable("User Name", null, null, context),
+                                Font_Style.setLabel("User Name", null, null, context),
                                 keyboardType: TextInputType.text,
                                 cursorColor: Font_Style.secondaryColor,
                                 style:  Font_Style.textfield_style(),

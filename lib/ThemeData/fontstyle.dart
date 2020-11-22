@@ -7,7 +7,7 @@ class Font_Style {
   static Color secondaryColor=Color.fromRGBO(7,9,32, 1).withOpacity(0.5);
 
 //to set the label for input text field
-  static InputDecoration setLable(String label, Icon prefix, var suffix, BuildContext context) {
+  static InputDecoration setLabel(String label, Icon prefixIcon, var suffixIcon, BuildContext context) {
     return InputDecoration(
       //isDense: true,
         labelText:label,
@@ -20,10 +20,41 @@ class Font_Style {
       border: InputBorder.none,
         contentPadding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 8.0.w),
         labelStyle: productsans_medium(secondaryColor, 45.0),
-      suffixIcon: suffix == null ? null : suffix,
-      prefixIcon: prefix == null ? null : prefix,
+      suffixIcon: suffixIcon == null ? null : suffixIcon,
+      prefixIcon: prefixIcon == null ? null : prefixIcon,
     );
   }
+
+  static InputDecoration setLabelAllBorders(String label, Icon prefixIcon, var suffixIcon, BuildContext context) {
+    return InputDecoration(
+      //isDense: true,
+      labelText:label,
+      counterText: "",
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: secondaryColor, width: 1,),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: secondaryColor, width: 1),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: secondaryColor, width: 1),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red, width: 1),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: secondaryColor, width: 1),
+      ),
+      contentPadding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 15.0),
+      labelStyle: productsans_SemiBold(primaryColor.withOpacity(0.7), 45.0),
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+    );
+  }
+  
   static TextStyle textfield_style(){
     return productsans_medium(primaryColor.withOpacity(0.7), 50);
   }

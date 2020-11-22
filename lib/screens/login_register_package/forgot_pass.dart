@@ -32,8 +32,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back, color: Font_Style.primaryColor, size: 24.0,),
+        leading: InkWell(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(
+            Icons.arrow_back, color: Font_Style.primaryColor, size: 24.0,),
+        ),
         title: Text(
           "Reset Password", style: Font_Style.productsans_medium(null, 56),),
         backgroundColor: Colors.white,
@@ -113,12 +118,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   RaisedButton(
                     onPressed: onResetPress,
                     textColor: Colors.white,
-                    color: Colors.green,
+                    color: Colors.teal[800],
                     padding: EdgeInsets.symmetric(
                         vertical: 12.0, horizontal: 30.0),
                     child: Text(
                       "Reset Password",
-                      style: Font_Style.productsans_medium(Colors.white, 50),
+                      style: Font_Style.productsans_Bold(Colors.white, 52),
                     ),
                   ),
                   Spacer(flex: 10,),

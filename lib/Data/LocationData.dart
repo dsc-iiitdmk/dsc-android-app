@@ -1,8 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 
 class LocationData {
@@ -14,7 +10,7 @@ class LocationData {
     String stateName, distName;
     List<String> lines = data.split("\n");
     for(String line in lines){
-      if(!line.isEmpty){
+      if(line.isNotEmpty){
         distName = line.split(",")[0].trim();
         stateName = line.split(",")[1].trim();
         if(!states.contains(stateName)){
@@ -31,7 +27,7 @@ class LocationData {
   }
 
   List<String> getDistrict(String state){
-    if(state == null) return new List<String>.empty();
+    if(state == null) return new List<String>();//.empty();
     return districtMap[state];
   }
 }

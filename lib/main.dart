@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/login_register.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/screens/welcome_package/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         'home_bot_nav': (context) => HomeBotNav(),
         'login_register': (context) => LoginRegister(),
         'forgot_pass': (context) => ForgotPassword(),
+        'profile_edit': (context) => ProfileEdit(),
       },
       initialRoute: '/',
     );
