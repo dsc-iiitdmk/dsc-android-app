@@ -1,5 +1,6 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -137,6 +138,12 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ForgotPassword()),
+              );
+              break;
+            case "My Profile":
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProfileEdit()),
               );
               break;
             default:

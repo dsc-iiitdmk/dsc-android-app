@@ -1,5 +1,5 @@
 class Profile{
-  String name, email, phone, state, dist;
+  String name, email, phone, state, dist, branch, year;
 
   String getName(){
     return name;
