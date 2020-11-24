@@ -31,22 +31,22 @@ class Font_Style {
       labelText:label,
       counterText: "",
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1,),
+        borderSide: BorderSide(color: secondaryColor, width: 1.5,),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1),
+        borderSide: BorderSide(color: secondaryColor, width: 1.5),
       ),
       disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1),
+        borderSide: BorderSide(color: secondaryColor, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1),
+        borderSide: BorderSide(color: Colors.red, width: 1.5),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1),
+        borderSide: BorderSide(color: Colors.red, width: 1.5),
       ),
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: secondaryColor, width: 1),
+        borderSide: BorderSide(color: secondaryColor, width: 1.5),
       ),
       contentPadding: EdgeInsets.symmetric(vertical: 8.0.h, horizontal: 15.0),
       labelStyle: productsans_SemiBold(primaryColor.withOpacity(0.7), 45.0),

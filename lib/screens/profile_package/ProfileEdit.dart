@@ -1,11 +1,15 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:dsc_iiitdmkl/Data/LocationData.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileEdit extends StatefulWidget{
   @override
@@ -27,6 +31,15 @@ class ProfileEditState extends State<ProfileEdit>{
   TextEditingController _userNameTextController = new TextEditingController(text: UserDetails.firebaseUser.displayName);
   TextEditingController _emailTextController = new TextEditingController(text: UserDetails.firebaseUser.email);
 
+  File _imageFile;
+  bool changedNow = false;
+  final _imagePicker = new ImagePicker();
+  
+  List<ProfilePhotoSelectType> profilePhotoSelectList=[
+    ProfilePhotoSelectType(title: "Open Gallery", icon:  Icon(Icons.photo_camera, color: Colors.white,),),
+    ProfilePhotoSelectType(title: "Open Camera",icon:  Icon(Icons.photo_library, color: Colors.white,),),
+  ];
+  
   @override
   void initState() {
     super.initState();
@@ -41,14 +54,14 @@ class ProfileEditState extends State<ProfileEdit>{
      appBar: AppBar(
        leading: InkWell(
          onTap: () {
-           //also implement update
            Navigator.of(context).pop();
          },
          child: Icon(
            Icons.arrow_back, color: Font_Style.primaryColor, size: 24.0,),
        ),
        title: Text(
-         "My Profile", style: Font_Style.productsans_medium(null, 56),),
+         "My Profile", style: Font_Style.productsans_Bold(null, 60),),
+       centerTitle: true,
        backgroundColor: Colors.white,
      ),
      body: SafeArea(
@@ -70,37 +83,45 @@ class ProfileEditState extends State<ProfileEdit>{
                  child: BackdropFilter(
                    filter: ImageFilter.blur(sigmaX: 5,),
                    child: Center(
-                     child: Stack(
-                       children: <Widget>[
-                         Container(
-                           width: 120,
-                           height: 120,
-                           decoration: BoxDecoration(
-                               color: Colors.white,
-                               borderRadius: BorderRadius.circular(70),
-                               border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
-                               image: DecorationImage(
-                                   image: AssetImage("assets/userprofiledefault.png"),
-                                   fit: BoxFit.cover
-                               )
-                           ),
-                           //child: showImage(),
+                     child: InkWell(
+                       onTap: () {
+                         profilePhotoSheet(context);
+                       },
+                       child: Hero(
+                         tag: 'display_pic',
+                         child: Stack(
+                           children: <Widget>[
+                             Container(
+                               width: 120,
+                               height: 120,
+                               decoration: BoxDecoration(
+                                   color: Colors.white,
+                                   borderRadius: BorderRadius.circular(70),
+                                   border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
+                                   image: DecorationImage(
+                                       image: changedNow ? FileImage(_imageFile) : AssetImage("assets/userprofiledefault.png"),
+                                       fit: BoxFit.cover
+                                   )
+                               ),
+                               //child: showImage(),
+                             ),
+                             Padding(
+                               padding: EdgeInsets.only(left: 95,top: 85),
+                               child: Container(
+                                 width: 50.h,
+                                 height: 50.h,
+                                 decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(14),
+                                     color: Colors.cyan[900]
+                                 ),
+                                 child: Center(
+                                   child: Icon(Icons.edit,size: 12,color: Colors.white,),
+                                 ),
+                               ),
+                             )
+                           ],
                          ),
-                         Padding(
-                           padding: EdgeInsets.only(left: 95,top: 85),
-                           child: Container(
-                             width: 50.h,
-                             height: 50.h,
-                             decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(14),
-                                 color: Font_Style.primaryColor
-                             ),
-                             child: Center(
-                               child: Icon(Icons.edit,size: 12,color: Colors.white,),
-                             ),
-                           ),
-                         )
-                       ],
+                       ),
                      ),
                    ),
                  )
@@ -197,6 +218,8 @@ class ProfileEditState extends State<ProfileEdit>{
                        child: RaisedButton(
                          onPressed: () {
                            print("update");
+                           ////////////////////////////////////////////////////
+                          formUpdateFlare(context);
                          },
                          textColor: Colors.white,
                          color: Colors.teal[800],
@@ -259,4 +282,201 @@ class ProfileEditState extends State<ProfileEdit>{
       ),
     );
   }
+
+  void formUpdateFlare(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Profile updated successfully",
+            style: Font_Style.productsans_Bold(null, 50),
+          ),
+          contentPadding: EdgeInsets.all(0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.width / 4,
+                width: MediaQuery.of(context).size.width / 4,
+                child: FlareActor(
+                    "assets/form agreed anim.flr",
+                    alignment: Alignment.center,
+                    fit: BoxFit.fill,
+                    animation: "update",
+                    snapToEnd: true,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Ok',
+                style: Font_Style.productsans_SemiBold(null, 50)
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void profilePhotoSheet(context){
+    showModalBottomSheet(
+        context: (context),
+        enableDrag: true,
+        isDismissible: true,
+        builder: (context) {
+          return Container(
+            color: Color(0XFF737373),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Font_Style.primaryColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(60),
+                      topLeft: Radius.circular(60))),
+              padding: EdgeInsets.only(top: 10.h, left: 43.w, right: 43.w),
+              height: 400.h,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 35,
+                    height: 3,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  Spacer(flex: 30,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(
+                        profilePhotoSelectList.length,
+                            (index) => Container(
+                          padding: EdgeInsets.only(bottom: 50.h),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              if(index == 0) {
+                                _getAndUploadImage(0);
+                              }
+                              else if(index == 1) {
+                                _getAndUploadImage(1);
+                              }
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    profilePhotoSelectList[index].icon,
+                                    SizedBox(width: 40.0.w,),
+                                    Text(
+                                      profilePhotoSelectList[index].title,
+                                      style: Font_Style.productsans_SemiBold(Colors.white, 54.0),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                  ),
+                  Spacer(flex: 20,),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+  
+  Future _getAndUploadImage(int type) async {
+    var pickedFile;
+    if(type == 0) {
+      pickedFile = await _imagePicker.getImage(source: ImageSource.gallery,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 100
+      );
+    }
+    else{
+      pickedFile = await _imagePicker.getImage(source: ImageSource.camera);
+    }
+    setState(() {
+      if(pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+        _cropImage();
+        print(_imageFile);
+      }
+      else {
+        print("image picker error");
+      }
+    });
+    //StorageReference storageReference = FirebaseStorage.instance
+      //  .ref()
+        //.child('user/${file.path}}');
+    //StorageUploadTask uploadTask = storageReference.putFile(file);
+    //await uploadTask.onComplete;
+    print('File Uploaded');
+    //storageReference.getDownloadURL().then((fileURL) async {
+      //await  UserManagement().edit_image(fileURL);
+      print("profile pic updated");
+    //});
+  }
+
+  Future<Null> _cropImage() async {
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: _imageFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ]
+            : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings());
+    if (croppedFile != null) {
+      _imageFile = croppedFile;
+      setState(() {
+        changedNow = true;
+      });
+      //_clearImage();
+    }
+    else {  
+      print("Error in cropping");
+    }
+  }
+
+  void _clearImage() {
+    _imageFile = null;
+    setState(() {
+      changedNow = false;
+    });
+  }
+}
+
+class ProfilePhotoSelectType {
+  final String title;
+  final Widget icon;
+  ProfilePhotoSelectType({this.title,this.icon});
 }

@@ -20,18 +20,6 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
     super.initState();
   }
 
-  /*
-  Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image(image: AssetImage("assets/logo.png"), width: 40, height: 40, fit: BoxFit.contain,),
-            SizedBox(width: 20,),
-            Text("DSC IIITDM Kurnool", style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,), ),
-          ],
-        ),
-   */
-  //upcoming, ongoing, past
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -41,7 +29,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Events", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 68)),
+        title: Text("Events", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 60)),
       ),
       body: SafeArea(
         child: Container(

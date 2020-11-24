@@ -26,7 +26,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Team Members", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 68)),
+        title: Text("Team Members", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 60)),
       ),
       body: SafeArea(
           child: Column(

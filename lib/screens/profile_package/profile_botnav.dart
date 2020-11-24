@@ -1,4 +1,5 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,57 +25,46 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
       child: Column(
         children: <Widget>[
           Spacer(flex: 15,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  /////////////////////////////////////////////////////
-                },
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 87,
-                      height: 87,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
-                          image: DecorationImage(
-                              image: AssetImage("assets/userprofiledefault.png"),
-                              fit: BoxFit.cover
-                          )
-                      ),
-                      //child: showImage(),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, __, ___) => ProfileEdit()));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Hero(
+                  tag: "display_pic",
+                  child: Container(
+                    width: 87,
+                    height: 87,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
+                        image: DecorationImage(
+                            image: AssetImage("assets/userprofiledefault.png"),
+                            fit: BoxFit.cover
+                        )
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 178.w,top: 138.h),
-                      child: Container(
-                        width: 42.h,
-                        height: 42.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Font_Style.primaryColor
-                        ),
-                        child: Center(
-                          child: Icon(Icons.edit,size: 20.h,color: Colors.white,),
-                        ),
-                      ),
-                    ),
-                  ],
+                    //child: showImage(),
+                  ),
                 ),
-              ),
-              SizedBox(width: 38.0.w,),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("${UserDetails.firebaseUser.displayName}", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_ExtraBold(null, 60.0),),
-                    SizedBox(height: 8.h,),
-                    Text("${UserDetails.firebaseUser.email}", textDirection: TextDirection.ltr, textAlign: TextAlign.left, overflow: TextOverflow.clip, style: Font_Style.productsans_Regular(null, 46.0),)
-                  ],
+                SizedBox(width: 38.0.w,),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("${UserDetails.firebaseUser.displayName}", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_ExtraBold(null, 60.0),),
+                      SizedBox(height: 8.h,),
+                      Text("${UserDetails.firebaseUser.email}", textDirection: TextDirection.ltr, textAlign: TextAlign.left, overflow: TextOverflow.clip, style: Font_Style.productsans_Regular(null, 46.0),)
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Spacer(flex: 32,),
           _listTitle("ACCOUNT",Icons.person_outline),
@@ -135,7 +125,11 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
               Navigator.pushNamed(context, "forgot_pass");
               break;
             case "My Profile":
-              Navigator.pushNamed(context, "profile_edit");
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, __, ___) => ProfileEdit()));
               break;
             default:
               print("default");

@@ -27,7 +27,7 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Projects", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 68)),
+        title: Text("Projects", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 60)),
       ),
       body: SafeArea(
           child: ListView.builder(itemBuilder: (context, index){

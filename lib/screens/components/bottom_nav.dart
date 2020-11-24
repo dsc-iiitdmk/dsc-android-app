@@ -4,6 +4,7 @@ import 'package:dsc_iiitdmkl/screens/members_package/members_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/profile_package/profile_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/projects_package/projects_botnav.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -38,6 +39,10 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.cyanAccent,
+      statusBarBrightness: Brightness.dark,
+    ));
     return WillPopScope(
       onWillPop: () {
         return Future.value(false);
