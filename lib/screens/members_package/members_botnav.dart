@@ -1,8 +1,11 @@
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/members_data.dart';
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Member.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class MembersBotNav extends StatefulWidget{
 
@@ -21,6 +24,9 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+    String currentMemberDomain;
+
+    Provider.of<LoadMembersData>(context).loadMembers();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,9 +41,11 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
               Container(
                 height: 100,
                 child: PageView.builder(
-                  itemCount: 10,
+                  itemCount: Provider.of<LoadMembersData>(context).membersList.length,
                   controller: PageController(viewportFraction: 0.4),
-                  onPageChanged: (int index) => setState(() => _index = index),
+                  onPageChanged: (int index) => setState(() {
+                    _index = index;
+                  }),
                   itemBuilder: (_, i) {
                     return Transform.scale(
                       scale: i == _index ? 1 : 0.6,
@@ -48,15 +56,15 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
                           shape: BoxShape.circle,
                         ),
                         padding: EdgeInsets.all(40),
-                        child: i == 0 ? Text("Android", style: Font_Style.productsans_Bold(Colors.white, 48), textAlign: TextAlign.center,) : Text("Web", style: Font_Style.productsans_Bold(Colors.white, 48), textAlign: TextAlign.center,),
+                        child: Text(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(i), style: Font_Style.productsans_Bold(Colors.white, 48), textAlign: TextAlign.center,),
                       ),
                     );
                   },
                 ),
               ),
               Expanded(child: ListView.builder(itemBuilder: (_, index) {
-                return membersCard();
-              }, itemCount: 10,),
+                return membersCard(Provider.of<LoadMembersData>(context).membersList[currentMemberDomain].elementAt(index));
+              }, itemCount: Provider.of<LoadMembersData>(context).membersList != null && Provider.of<LoadMembersData>(context).membersList.containsKey(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)) ? Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].length : 0,),
               flex: 1,)
             ],
           ),
@@ -64,7 +72,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
     );
   }
 
-  Widget membersCard(){
+  Widget membersCard(Member member){
     return Card(
       elevation: 3.0,
       margin: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.0.h),
@@ -80,7 +88,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
           children: [
             Expanded(flex: 2, child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.network("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc", fit: BoxFit.fill , height: height /6,),
+              child: Image.network(member.image, fit: BoxFit.fill , height: height /6,),
             ),),
             Expanded(flex: 4, child: Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -88,8 +96,8 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Adarsh Shrivastava", style: Font_Style.productsans_Bold(Colors.black, 60),),
-                  Text("ECE, BTech 2019", style: Font_Style.productsans_medium(Colors.black54, 45)),
+                  Text(member.name, style: Font_Style.productsans_Bold(Colors.black, 60),),
+                  Text(member.batch, style: Font_Style.productsans_medium(Colors.black54, 45)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,

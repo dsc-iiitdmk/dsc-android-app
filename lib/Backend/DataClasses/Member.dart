@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
+
 class Member{
   String name, batch, gitLink, instaLink, linkedinLink, image, domain; // domain means android, web, etc
 
@@ -59,4 +63,13 @@ class Member{
 
   Member();
   Member.load(this.name, this.batch, this.gitLink, this.instaLink, this.linkedinLink, this.image, this.domain);
+  Member.fromJSON(String json){
+    this.name = jsonDecode(json)['name'];
+    this.batch = jsonDecode(json)['batch'];
+    this.gitLink = jsonDecode(json)['gitLink'];
+    this.instaLink = jsonDecode(json)['instaLink'];
+    this.linkedinLink = jsonDecode(json)['linkedinLink'];
+    this.image = jsonDecode(json)['image'];
+    this.domain = jsonDecode(json)['domain'];
+  }
 }

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
+
 class Project{
   String name;
   String desc;
@@ -29,4 +33,9 @@ class Project{
 
   Project.load(this.name, this.desc, this.gitLink);
   Project();
+  Project.fromJSON(String json){
+    this.name = jsonDecode(json)['name'];
+    this.desc = jsonDecode(json)['desc'];
+    this.gitLink = jsonDecode(json)['gitLink'];
+  }
 }

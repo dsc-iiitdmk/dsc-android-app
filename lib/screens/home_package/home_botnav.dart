@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/home_data.dart';
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Home.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomeBotNav extends StatefulWidget {
   @override
@@ -51,6 +54,8 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<LoadHomeData>(context).loadHomeData();
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -128,62 +133,10 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0.h,),
-                      Card(
-                        elevation: 7.0,
-                        margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text("About The Program", style: Font_Style.productsans_Bold(null, 60),),
-                              SizedBox(height: 50.0.h,),
-                              Text("Developer Student Club powered by Google developers "
-                                  "is an initiative to grow their knowledge on "
-                                  "developer technologies and more "
-                                  "through peer to peer workshops and events and gain "
-                                  "relevant industry experience."
-                                  "Google collaborates with university students who are "
-                                  "passionate about growing developer communities.", textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Card(
-                        elevation: 7.0,
-                        margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Text("What We Do At DSC IIITDMKL", style: Font_Style.productsans_Bold(null, 60),),
-                              SizedBox(height: 50.0.h,),
-                              Text("Developer Student Club, IIITDM Kurnool is inspired "
-                                  "by Google Developers' family to develop "
-                                  "projects involving various students "
-                                  "from different backgrounds. We started our journey in Feb 2019. "
-                                  "We try to engage student developers through hackathons and "
-                                  "competitive programming contests. The motive is to create a local "
-                                  "eco-system of programmers and developers in and around the institute. "
-                                  "The technology awareness is our motive.", textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),)
-                            ],
-                          ),
-                        ),
+                      Column(
+                        children: Provider.of<LoadHomeData>(context).homeData != null ? <Widget>[
+                          for(HomeCard card in Provider.of<LoadHomeData>(context).homeData.homeCards) HomeCardView(context, card.title, card.text)
+                        ] : [],
                       ),
                       SizedBox(height: 40.0.h,),
                       Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
@@ -274,4 +227,29 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+Widget HomeCardView(BuildContext context, String title, String text){
+  return Card(
+    elevation: 7.0,
+    margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+    ),
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(title, style: Font_Style.productsans_Bold(null, 60),),
+          SizedBox(height: 50.0.h,),
+          Text(text, textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
+        ],
+      ),
+    ),
+  );
 }
