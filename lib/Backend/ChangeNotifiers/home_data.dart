@@ -9,6 +9,7 @@ class LoadHomeData extends ChangeNotifier{
   Home homeData;
 
   LoadHomeData();
+  notifyListeners();
 
   // List<Member> membersList;
   // List<Project> projectList;

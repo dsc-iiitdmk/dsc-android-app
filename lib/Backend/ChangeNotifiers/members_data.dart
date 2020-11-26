@@ -21,6 +21,7 @@ class LoadMembersData extends ChangeNotifier{
         Map<dynamic,dynamic> data = snapshot.value;
         data.forEach((key, value) {
           List<dynamic> list = value;
+          print("lislistlistlistlist");
           List<Member> mList = List();
           for(dynamic d in list){
             mList.add(Member.fromJSON(jsonEncode(d)));
