@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ProfileEdit extends StatefulWidget{
   @override
@@ -27,6 +28,7 @@ class ProfileEditState extends State<ProfileEdit>{
   Profile userProfile;
   LocationData _locationData;
   List<String> stateList = new List<String>();
+  bool isProfileLoaded = false;
 
   TextEditingController _phoneTextController = new TextEditingController();
   TextEditingController _studentNameTextController = new TextEditingController();
@@ -51,6 +53,7 @@ class ProfileEditState extends State<ProfileEdit>{
 
     UserDetails.loadUserProfile().then((value){
       setState(() {
+        isProfileLoaded = true;
         userProfile = value;
         _emailTextController.text = userProfile.email;
         _phoneTextController.text = userProfile.phone;
@@ -145,7 +148,7 @@ class ProfileEditState extends State<ProfileEdit>{
                      padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
                      child: SingleChildScrollView(
                        child: Column(
-                         children: [
+                         children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
                            profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.phone),
                            profileEntry("Email Address", true, _emailTextController, 45, TextInputType.phone),
                            profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),

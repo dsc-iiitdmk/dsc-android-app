@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventsBotNav extends StatefulWidget{
   _EventsBotNavState createState() => _EventsBotNavState();
@@ -125,17 +126,20 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: _height / 5.9,
-        alignment: Alignment.center,
-        child: Text(event.name, style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: "ProductSans", fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          image: DecorationImage(
-            colorFilter: ColorFilter.mode(Colors.black.withAlpha(50), BlendMode.srcATop),
-            fit: BoxFit.cover,
-            image: Image.network(event.img, width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
+      child: InkWell(
+        onTap: () async {await launch(event.formID);},
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: _height / 5.9,
+          alignment: Alignment.center,
+          child: Text(event.name, style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: "ProductSans", fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(Colors.black.withAlpha(50), BlendMode.srcATop),
+              fit: BoxFit.cover,
+              image: Image.network(event.img, width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
+            ),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MembersBotNav extends StatefulWidget{
 
@@ -102,11 +103,11 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset("assets/github.svg", height: 60.0.h, width: 60.0.w, color: Colors.black,),
+                      InkWell(onTap: () async {await launch(member.gitLink);}, child: SvgPicture.asset("assets/github.svg", height: 60.0.h, width: 60.0.w, color: Colors.black,),),
                       SizedBox(width: 20,),
-                      SvgPicture.asset("assets/instagram.svg", height: 60.0.h, width: 60.0.w, color: Color.fromRGBO(225, 48, 108, 1),),
+                      InkWell(onTap: () async {await launch(member.gitLink);}, child: SvgPicture.asset("assets/instagram.svg", height: 60.0.h, width: 60.0.w, color: Color.fromRGBO(225, 48, 108, 1),),),
                       SizedBox(width: 20,),
-                      SvgPicture.asset("assets/linkedin.svg", height: 60.0.h, width: 60.0.w,),
+                      InkWell(onTap: () async {await launch(member.gitLink);}, child: SvgPicture.asset("assets/linkedin.svg", height: 60.0.h, width: 60.0.w,),),
                     ],
                   )
                 ],

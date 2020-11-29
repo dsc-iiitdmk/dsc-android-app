@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectsBotNav extends StatefulWidget{
 
@@ -65,7 +66,7 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
               SizedBox(height: 5,),
               Text(project.desc, style: Font_Style.productsans_medium(Colors.grey[800], 45), textAlign: TextAlign.center,),
               SizedBox(height: 5,),
-              Container(alignment: Alignment.bottomRight, child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.black,),),
+              Container(alignment: Alignment.bottomRight, child: InkWell(child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.black,), onTap: () async {await launch(project.gitLink);},),),
               SizedBox(height: 10,),
             ],
           )
