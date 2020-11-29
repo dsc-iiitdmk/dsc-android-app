@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/Data/LocationData.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +24,13 @@ class ProfileEdit extends StatefulWidget{
 
 class ProfileEditState extends State<ProfileEdit>{
 
-  String dropdownSelectedYear;
-  String dropdownSelectedBranch;
-  String dropdownSelectedState;
-  String dropdownSelectedDist;
+  Profile userProfile;
   LocationData _locationData;
   List<String> stateList = new List<String>();
 
   TextEditingController _phoneTextController = new TextEditingController();
-  TextEditingController _userNameTextController = new TextEditingController(text: UserDetails.firebaseUser.displayName);
-  TextEditingController _emailTextController = new TextEditingController(text: UserDetails.firebaseUser.email);
+  TextEditingController _studentNameTextController = new TextEditingController();
+  TextEditingController _emailTextController = new TextEditingController();
 
   File _imageFile;
   bool changedNow = false;
@@ -46,10 +47,21 @@ class ProfileEditState extends State<ProfileEdit>{
     UserDetails.getUserId(context);
     _locationData = new LocationData();
     _locationData.getStateList().then((value) => setState((){stateList = value;}));
+    userProfile = new Profile();
+
+    UserDetails.loadUserProfile().then((value){
+      setState(() {
+        userProfile = value;
+        _emailTextController.text = userProfile.email;
+        _phoneTextController.text = userProfile.phone;
+        _studentNameTextController.text = FirebaseAuth.instance.currentUser.displayName;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context){
+
    return Scaffold(
      appBar: AppBar(
        leading: InkWell(
@@ -99,7 +111,7 @@ class ProfileEditState extends State<ProfileEdit>{
                                    borderRadius: BorderRadius.circular(70),
                                    border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
                                    image: DecorationImage(
-                                       image: changedNow ? FileImage(_imageFile) : AssetImage("assets/userprofiledefault.png"),
+                                       image: changedNow ? FileImage(_imageFile) : (FirebaseAuth.instance.currentUser.photoURL == null ? AssetImage("assets/userprofiledefault.png") : NetworkImage(FirebaseAuth.instance.currentUser.photoURL)),
                                        fit: BoxFit.cover
                                    )
                                ),
@@ -134,8 +146,8 @@ class ProfileEditState extends State<ProfileEdit>{
                      child: SingleChildScrollView(
                        child: Column(
                          children: [
-                           profileEntry("User Name", false, _userNameTextController, 30, TextInputType.phone),
-                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.phone),
+                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.phone),
+                           profileEntry("Email Address", true, _emailTextController, 45, TextInputType.phone),
                            profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
                            profileDropDownEntry(
                                <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']
@@ -146,11 +158,11 @@ class ProfileEditState extends State<ProfileEdit>{
                                  );
                                })
                                    .toList(),
-                               dropdownSelectedYear,
+                               userProfile.sem,
                                "Select Semester",
                                    (String newValue) {
                                  setState(() {
-                                   dropdownSelectedYear = newValue;
+                                   userProfile.sem = newValue;
                                  });
                                }
                            ),
@@ -163,11 +175,11 @@ class ProfileEditState extends State<ProfileEdit>{
                                  );
                                })
                                    .toList(),
-                               dropdownSelectedBranch,
+                               userProfile.branch,
                                "Select Branch",
                                    (String newValue) {
                                  setState(() {
-                                   dropdownSelectedBranch = newValue;
+                                   userProfile.branch = newValue;
                                  });
                                }
                            ),
@@ -180,17 +192,17 @@ class ProfileEditState extends State<ProfileEdit>{
                                  );
                                })
                                    .toList(),
-                               dropdownSelectedState,
+                               userProfile.state,
                                "Select State",
                                    (String newValue) {
                                  setState(() {
-                                   dropdownSelectedState = newValue;
-                                   dropdownSelectedDist = null;
+                                   userProfile.state = newValue;
+                                   userProfile.dist = null;
                                  });
                                }
                            ),
                            profileDropDownEntry(
-                               _locationData.getDistrict(dropdownSelectedState)
+                               _locationData.getDistrict(userProfile.state)
                                    .map<DropdownMenuItem<String>>((String value) {
                                  return DropdownMenuItem<String>(
                                    value: value,
@@ -198,11 +210,11 @@ class ProfileEditState extends State<ProfileEdit>{
                                  );
                                })
                                    .toList(),
-                               dropdownSelectedDist,
+                               userProfile.dist,
                                "Select District",
                                    (String newValue) {
                                  setState(() {
-                                   dropdownSelectedDist = newValue;
+                                   userProfile.dist = newValue;
                                  });
                                }
                            ),
@@ -216,10 +228,17 @@ class ProfileEditState extends State<ProfileEdit>{
                      child: Padding(
                        padding: EdgeInsets.symmetric(vertical: 50.0.h),
                        child: RaisedButton(
-                         onPressed: () {
+                         onPressed: () async {
                            print("update");
                            ////////////////////////////////////////////////////
-                          formUpdateFlare(context);
+                           if(_studentNameTextController.text != FirebaseAuth.instance.currentUser.displayName){
+                             await FirebaseAuth.instance.currentUser.updateProfile(displayName: _studentNameTextController.text);
+                           }
+
+                           userProfile.email = _emailTextController.text;
+                           userProfile.phone = _phoneTextController.text;
+                           await UserDetails.updateUserProfile(userProfile);
+                           formUpdateFlare(context);
                          },
                          textColor: Colors.white,
                          color: Colors.teal[800],
@@ -244,16 +263,16 @@ class ProfileEditState extends State<ProfileEdit>{
       padding: EdgeInsets.only(left: 15, right: 15,),
       margin: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        border: Border.all(color: dropdownSelectedState == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, width: 1),
+        border: Border.all(color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, width: 1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: DropdownButtonFormField<String>(
         value: dropdownValue,
-        hint: Text("$hint", style: Font_Style.productsans_SemiBold(dropdownSelectedState == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
-        icon: Icon(Icons.arrow_drop_down, color: dropdownSelectedState == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
+        hint: Text("$hint", style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
+        icon: Icon(Icons.arrow_drop_down, color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
         iconSize: 24,
         elevation: 16,
-        style: Font_Style.productsans_SemiBold(dropdownSelectedState == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : null, 45),
+        style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : null, 45),
         isExpanded: true,
         onChanged: onChange,
         items: items,
@@ -417,16 +436,14 @@ class ProfileEditState extends State<ProfileEdit>{
         print("image picker error");
       }
     });
-    //StorageReference storageReference = FirebaseStorage.instance
-      //  .ref()
-        //.child('user/${file.path}}');
-    //StorageUploadTask uploadTask = storageReference.putFile(file);
-    //await uploadTask.onComplete;
+    Reference ref =FirebaseStorage.instance.ref('Profile/${FirebaseAuth.instance.currentUser.uid}');
+    ref.putFile(_imageFile).whenComplete(() => updateOnDB(ref));
     print('File Uploaded');
-    //storageReference.getDownloadURL().then((fileURL) async {
-      //await  UserManagement().edit_image(fileURL);
-      print("profile pic updated");
-    //});
+  }
+
+  void updateOnDB(Reference ref) async {
+    String url = await ref.getDownloadURL();
+    await FirebaseAuth.instance.currentUser.updateProfile(photoURL: url);
   }
 
   Future<Null> _cropImage() async {

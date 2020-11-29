@@ -27,7 +27,7 @@ class LocationData {
   }
 
   List<String> getDistrict(String state){
-    if(state == null) return new List<String>();//.empty();
+    if(state == null) return new List<String>();
     return districtMap[state];
   }
 }

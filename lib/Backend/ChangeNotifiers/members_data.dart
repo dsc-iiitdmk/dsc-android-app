@@ -1,9 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:dsc_iiitdmkl/Backend/DataClasses/Home.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Member.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 

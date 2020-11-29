@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +46,7 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(width: 1, style: BorderStyle.solid, color: Font_Style.primaryColor.withOpacity(0.2)),
                         image: DecorationImage(
-                            image: AssetImage("assets/userprofiledefault.png"),
+                            image: FirebaseAuth.instance.currentUser.photoURL == null ? AssetImage("assets/userprofiledefault.png") : NetworkImage(FirebaseAuth.instance.currentUser.photoURL),
                             fit: BoxFit.cover
                         )
                     ),
