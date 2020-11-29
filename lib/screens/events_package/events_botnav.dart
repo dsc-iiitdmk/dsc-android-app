@@ -1,7 +1,10 @@
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/events_data.dart';
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class EventsBotNav extends StatefulWidget{
   _EventsBotNavState createState() => _EventsBotNavState();
@@ -22,6 +25,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+
+    Provider.of<LoadEventsData>(context).loadEvents();
+
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     
@@ -70,9 +76,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                           physics: ScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          itemCount: 5,
+                          itemCount: Provider.of<LoadEventsData>(context).pastEvents.length,
                           itemBuilder: (context, i) {
-                            return _eventsItem();
+                            return _eventsItem(Provider.of<LoadEventsData>(context).pastEvents.elementAt(i));
                           },
                         ),
                       ),
@@ -82,9 +88,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                           physics: ScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          itemCount: 5,
+                          itemCount: Provider.of<LoadEventsData>(context).ongoingEvents.length,
                           itemBuilder: (context, i) {
-                            return _eventsItem();
+                            return _eventsItem(Provider.of<LoadEventsData>(context).ongoingEvents.elementAt(i));
                           },
                         ),
                       ),
@@ -94,9 +100,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                           physics: ScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          itemCount: 5,
+                          itemCount: Provider.of<LoadEventsData>(context).futureEvents.length,
                           itemBuilder: (context, i) {
-                            return _eventsItem();
+                            return _eventsItem(Provider.of<LoadEventsData>(context).futureEvents.elementAt(i));
                           },
                         ),
                       ),
@@ -111,7 +117,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
     );
   }
 
-  Widget _eventsItem() {
+  Widget _eventsItem(Events event) {
     return Card(
       elevation: 3.0,
       margin: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.0.h),
@@ -123,13 +129,13 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
         width: MediaQuery.of(context).size.width,
         height: _height / 5.9,
         alignment: Alignment.center,
-        child: Text("AI/ML COMPETITIONS AND QUIZ", style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: "ProductSans", fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+        child: Text(event.name, style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: "ProductSans", fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           image: DecorationImage(
             colorFilter: ColorFilter.mode(Colors.black.withAlpha(50), BlendMode.srcATop),
             fit: BoxFit.cover,
-            image: Image.network("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc", width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
+            image: Image.network(event.img, width: MediaQuery.of(context).size.width, height: 200, fit: BoxFit.cover, colorBlendMode: BlendMode.srcIn, color: Colors.black,).image  ,
           ),
         ),
       ),

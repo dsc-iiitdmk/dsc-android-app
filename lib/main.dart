@@ -1,3 +1,4 @@
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/events_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/home_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/members_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/project_data.dart';
@@ -21,6 +22,7 @@ void main() async {
       ChangeNotifierProvider<LoadHomeData>(create: (_) => LoadHomeData()),
       ChangeNotifierProvider<LoadMembersData>(create: (_) => LoadMembersData()),
       ChangeNotifierProvider<LoadProjectData>(create: (_) => LoadProjectData()),
+      ChangeNotifierProvider<LoadEventsData>(create: (_) => LoadEventsData()),
     ],
     child: MyApp(),
   ));
