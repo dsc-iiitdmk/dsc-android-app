@@ -9,25 +9,28 @@ import 'package:flutter/cupertino.dart';
 class LoadMembersData extends ChangeNotifier{
   final DatabaseReference databaseRef = FirebaseDatabase().reference();
   HashMap<String, List<Member>> membersList;
+  bool dataLoaded = false;
 
   LoadMembersData();
 
   void loadMembers(){
-    if(membersList == null)
-      databaseRef.child("members").once().then((snapshot){
-        membersList = HashMap();
-        Map<dynamic,dynamic> data = snapshot.value;
+    if(membersList == null) {
+      membersList = HashMap();
+      databaseRef.child("members").once().then((snapshot) {
+        Map<dynamic, dynamic> data = snapshot.value;
         data.forEach((key, value) {
           List<dynamic> list = value;
-          print("lislistlistlistlist");
           List<Member> mList = List();
-          for(dynamic d in list){
+          for (dynamic d in list) {
             mList.add(Member.fromJSON(jsonEncode(d)));
           }
           membersList.putIfAbsent(key, () => mList);
         });
-        print('done');
+        dataLoaded = true;
         notifyListeners();
       });
+    }else{
+      notifyListeners();
+    }
   }
 }

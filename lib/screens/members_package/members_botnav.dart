@@ -24,7 +24,6 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    String currentMemberDomain;
 
     Provider.of<LoadMembersData>(context).loadMembers();
 
@@ -35,7 +34,8 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
         title: Text("Team Members", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 60)),
       ),
       body: SafeArea(
-          child: Column(
+          child: Provider.of<LoadMembersData>(context).dataLoaded ?
+          Column(
             children: [
               SizedBox(height: 10,),
               Container(
@@ -63,11 +63,11 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
                 ),
               ),
               Expanded(child: ListView.builder(itemBuilder: (_, index) {
-                return membersCard(Provider.of<LoadMembersData>(context).membersList[currentMemberDomain].elementAt(index));
+                return membersCard(Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].elementAt(index));
               }, itemCount: Provider.of<LoadMembersData>(context).membersList != null && Provider.of<LoadMembersData>(context).membersList.containsKey(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)) ? Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].length : 0,),
-              flex: 1,)
+                flex: 1,)
             ],
-          ),
+          ) : Container(),
       ),
     );
   }
