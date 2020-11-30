@@ -38,7 +38,7 @@ class GoogleAuth{
   }
 
   static void updateUserDb() async{
-    userProfile.email = UserDetails.firebaseUser.email;
+    userProfile.email = UserDetails.firebaseUser.email.toString();
 
     await UserDetails.updateUserProfile(userProfile);
   }

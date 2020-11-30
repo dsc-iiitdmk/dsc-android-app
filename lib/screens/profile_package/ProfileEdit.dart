@@ -57,7 +57,7 @@ class ProfileEditState extends State<ProfileEdit>{
         userProfile = value;
         _emailTextController.text = userProfile.email;
         _phoneTextController.text = userProfile.phone;
-        _studentNameTextController.text = FirebaseAuth.instance.currentUser.displayName;
+        _studentNameTextController.text = UserDetails.firebaseUser.displayName;
       });
     });
   }

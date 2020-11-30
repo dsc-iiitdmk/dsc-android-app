@@ -121,7 +121,7 @@ class EmailPasswordAuth {
   }
 
   static void updateUserDb() async{
-    userProfile.email = UserDetails.firebaseUser.email;
+    userProfile.email = FirebaseAuth.instance.currentUser.email;
 
     await UserDetails.updateUserProfile(userProfile);
   }
