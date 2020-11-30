@@ -13,7 +13,7 @@ class EventForm extends StatefulWidget {
 
 class _EventFormState extends State<EventForm> {
 
-  final _registrationFormKey = GlobalKey<FormState>();
+  final _eventRegistrationFormKey = GlobalKey<FormState>();
 
   TextEditingController _dynamicTextController = new TextEditingController();
   TextEditingController _dynamicNumberController = new TextEditingController();
@@ -115,23 +115,24 @@ class _EventFormState extends State<EventForm> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Form(
-          key: _registrationFormKey,
+      child: Form(
+        key: _eventRegistrationFormKey,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           child: Column(
             children: <Widget>[
               Text("Registration Form", style: Font_Style.productsans_SemiBold_underline(Colors.blue, 56),),
               SizedBox(height: 60.0.h,),
               TextFormField(
                 validator: (val){
-                  return val.length <= 10 ? "Too short" : "";
+                  return val.length <= 10 ? "Too short" : null;
                 },
                 scrollPadding: EdgeInsets.all(25),
+                maxLength: 500,
                 maxLines: 5,
                 minLines: 1,
                 controller: _dynamicTextController,
@@ -143,9 +144,10 @@ class _EventFormState extends State<EventForm> {
               SizedBox(height: 40.0.h,),
               TextFormField(
                 validator: (val){
-                  return val.length <= 2 ? "Too short" : "";
+                  return val.length <= 2 ? "Too short" : null;
                 },
                 scrollPadding: EdgeInsets.all(25),
+                maxLength: 30,
                 maxLines: 2,
                 minLines: 1,
                 controller: _dynamicNumberController,
@@ -206,11 +208,7 @@ class _EventFormState extends State<EventForm> {
               ),
               SizedBox(height: 80.0.h,),
               RaisedButton(
-                onPressed: () {
-                  if(_registrationFormKey.currentState.validate()) {
-                    print("Submit");
-                  }
-                },
+                onPressed: _submitRegistrationForm,
                 textColor: Colors.white,
                 color: Colors.teal,
                 padding: EdgeInsets.symmetric(
@@ -220,6 +218,7 @@ class _EventFormState extends State<EventForm> {
                   style: Font_Style.productsans_Bold(Colors.white, 52),
                 ),
               ),
+              SizedBox(height: 20.0.h,),
             ],
           ),
         ),
@@ -239,5 +238,11 @@ class _EventFormState extends State<EventForm> {
       activeColor: Colors.teal,
       title: Text(title),
     );
+  }
+
+  void _submitRegistrationForm() {
+    if(_eventRegistrationFormKey.currentState.validate()) {
+      print("Submit");
+    }
   }
 }
