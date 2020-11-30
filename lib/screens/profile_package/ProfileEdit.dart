@@ -39,8 +39,8 @@ class ProfileEditState extends State<ProfileEdit>{
   final _imagePicker = new ImagePicker();
   
   List<ProfilePhotoSelectType> profilePhotoSelectList=[
-    ProfilePhotoSelectType(title: "Open Gallery", icon:  Icon(Icons.photo_camera, color: Colors.white,),),
-    ProfilePhotoSelectType(title: "Open Camera",icon:  Icon(Icons.photo_library, color: Colors.white,),),
+    ProfilePhotoSelectType(title: "Open Gallery", icon:  Icon(Icons.photo_library, color: Colors.white,),),
+    ProfilePhotoSelectType(title: "Open Camera",icon:  Icon(Icons.photo_camera, color: Colors.white,),),
   ];
   
   @override
@@ -90,7 +90,8 @@ class ProfileEditState extends State<ProfileEdit>{
                  height: MediaQuery.of(context).size.height / 5,
                  decoration: BoxDecoration(
                    image: DecorationImage(
-                     image: new NetworkImage("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc"),
+                     //image: new NetworkImage("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc"),
+                     image: changedNow ? FileImage(_imageFile) : (FirebaseAuth.instance.currentUser.photoURL == null ? AssetImage("assets/userprofiledefault.png") : NetworkImage(FirebaseAuth.instance.currentUser.photoURL)),
                      fit: BoxFit.fill,
                      colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
                    ),
@@ -145,6 +146,8 @@ class ProfileEditState extends State<ProfileEdit>{
                child: Stack(
                  children: <Widget>[
                    Container(
+                     height: MediaQuery.of(context).size.height,
+                     width: MediaQuery.of(context).size.width,
                      padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
                      child: SingleChildScrollView(
                        child: Column(

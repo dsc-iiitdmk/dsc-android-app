@@ -1,3 +1,4 @@
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/email_pass_auth_firebase.dart';
@@ -634,7 +635,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
     FocusScope.of(context).requestFocus(FocusNode());
     if(_registerFormKey.currentState.validate()) {
       setState(() {
-        stateOnlyText=  ButtonState.loading;
+        stateOnlyText =  ButtonState.loading;
       });
       EmailPasswordAuth.signUpWithEmailAndPassword(
           _emailTextController.text, _passwordTextController.text, _userNameTextController.text, context, buttonCallback).catchError((e){
