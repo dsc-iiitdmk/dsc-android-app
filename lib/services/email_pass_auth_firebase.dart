@@ -119,13 +119,7 @@ class EmailPasswordAuth {
   }
 
   static void updateUserDb() async{
-    userProfile.email = FirebaseAuth.instance.currentUser.email;
-    userProfile.name = FirebaseAuth.instance.currentUser.displayName;
-    userProfile.phone = userProfile.phone == null || userProfile.phone == "" ? "" : userProfile.phone;
-    userProfile.sem = userProfile.sem == null || userProfile.sem == "" ? "" : userProfile.sem;
-    userProfile.branch = userProfile.branch == null || userProfile.branch == "" ? "" : userProfile.branch;
-    userProfile.state = userProfile.state == null || userProfile.state == "" ? "" : userProfile.state;
-    userProfile.dist = userProfile.dist == null || userProfile.dist == "" ? "" : userProfile.dist;
+    userProfile.email = UserDetails.firebaseUser.email;
 
     await UserDetails.updateUserProfile(userProfile);
   }

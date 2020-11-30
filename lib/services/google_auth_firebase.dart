@@ -36,15 +36,8 @@ class GoogleAuth{
   }
 
   static void updateUserDb() async{
-    userProfile.email = UserDetails.firebaseUser.email.toString();
-    userProfile.name = UserDetails.firebaseUser.displayName.toString();
-    userProfile.phone = userProfile.phone == null || userProfile.phone == "" ? "" : userProfile.phone;
-    userProfile.sem = userProfile.sem == null || userProfile.sem == "" ? "" : userProfile.sem;
-    userProfile.branch = userProfile.branch == null || userProfile.branch == "" ? "" : userProfile.branch;
-    userProfile.state = userProfile.state == null || userProfile.state == "" ? "" : userProfile.state;
-    userProfile.dist = userProfile.dist == null || userProfile.dist == "" ? "" : userProfile.dist;
+    userProfile.email = UserDetails.firebaseUser.email;
 
-    print(userProfile);
     await UserDetails.updateUserProfile(userProfile);
   }
 
