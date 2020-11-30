@@ -152,7 +152,7 @@ class _EventFormState extends State<EventForm> {
             ),
             SizedBox(height: 40.0.h,),
             CheckboxListTile(
-              title: Text("title text"),
+              title: Text("Title Text", style: Font_Style.productsans_medium(null, 48),),
               value: checkedValue,
               onChanged: (newValue) {
                 setState(() {
