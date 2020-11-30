@@ -53,15 +53,13 @@ class ProfileEditState extends State<ProfileEdit>{
 
     UserDetails.loadUserProfile().then((value){
       setState(() {
+        isProfileLoaded = true;
         userProfile = value;
         _emailTextController.text = userProfile.email;
         _phoneTextController.text = userProfile.phone;
-        _studentNameTextController.text = userProfile.name;
-
-        isProfileLoaded = true;
+        _studentNameTextController.text = FirebaseAuth.instance.currentUser.displayName;
       });
     });
-    print(UserDetails.firebaseUser);
   }
 
   @override
@@ -154,8 +152,8 @@ class ProfileEditState extends State<ProfileEdit>{
                      child: SingleChildScrollView(
                        child: Column(
                          children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
-                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.emailAddress),
-                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.text),
+                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.phone),
+                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.phone),
                            profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
                            profileDropDownEntry(
                                <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']
@@ -237,12 +235,13 @@ class ProfileEditState extends State<ProfileEdit>{
                        padding: EdgeInsets.symmetric(vertical: 50.0.h),
                        child: RaisedButton(
                          onPressed: () async {
+                           print("update");
+                           ////////////////////////////////////////////////////
                            if(_studentNameTextController.text != FirebaseAuth.instance.currentUser.displayName){
-                             await FirebaseAuth.instance.currentUser.updateProfile(displayName: _studentNameTextController.text,);
+                             await FirebaseAuth.instance.currentUser.updateProfile(displayName: _studentNameTextController.text);
                            }
 
                            userProfile.email = _emailTextController.text;
-                           userProfile.name = _studentNameTextController.text;
                            userProfile.phone = _phoneTextController.text;
                            await UserDetails.updateUserProfile(userProfile);
                            formUpdateFlare(context);
@@ -266,22 +265,20 @@ class ProfileEditState extends State<ProfileEdit>{
   }
 
   Widget profileDropDownEntry(List<DropdownMenuItem<String>> items, String dropdownValue, String hint, Function(String) onChange ) {
-    print("eeeeeeeeeeeeeeeeeeeee");
-    print(dropdownValue);
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15,),
       margin: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        border: Border.all(color: userProfile.state == null || userProfile.state == "" && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, width: 1),
+        border: Border.all(color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, width: 1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: DropdownButtonFormField<String>(
-        value: dropdownValue.trim() == "" ? null : dropdownValue,
-        hint: Text("$hint", style: Font_Style.productsans_SemiBold((userProfile.state == null || userProfile.state == "") && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
-        icon: Icon(Icons.arrow_drop_down, color: (userProfile.state == null || userProfile.state == "") && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
+        value: dropdownValue,
+        hint: Text("$hint", style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
+        icon: Icon(Icons.arrow_drop_down, color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
         iconSize: 24,
         elevation: 16,
-        style: Font_Style.productsans_SemiBold((userProfile.state == null || userProfile.state == "") && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : null, 45),
+        style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : null, 45),
         isExpanded: true,
         onChanged: onChange,
         items: items,
