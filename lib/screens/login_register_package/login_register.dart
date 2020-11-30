@@ -185,54 +185,23 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
   }
 
   Widget socialMediaLogin() {
-    return  Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        InkWell(
-          onTap: (){
-            GoogleAuth.handleGoogleSignIn(context,spincallbackgoogle);
-          },
-          child: Container(
-            width: 128.h,
-            height: 128.h,
-            padding: EdgeInsets.all(24.h),
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black45, blurRadius: 3)
-                ],
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white),
-            child: Image.asset("assets/google.png", fit: BoxFit.contain,),
-          ),
-        ),
-        SizedBox(
-          width: 120.w,
-        ),
-        InkWell(
-          onTap: () {
-            ///////////////////////////////////////
-          },
-          child: Container(
-            width: 128.h,
-            height: 128.h,
-            padding: EdgeInsets.only(
-                left: 0.h,
-                right: 22.h,
-                top: 24.h,
-                bottom: 24.h),
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black45, blurRadius: 3)
-                ],
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white),
-            child: Container(
-                child: Image.asset("assets/facebook.png", fit: BoxFit.contain,)),
-          ),
-        ),
-      ],
+    return InkWell(
+      onTap: (){
+        GoogleAuth.handleGoogleSignIn(context,spincallbackgoogle);
+      },
+      child: Container(
+        width: 128.h,
+        height: 128.h,
+        padding: EdgeInsets.all(24.h),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black45, blurRadius: 3)
+            ],
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.white),
+        child: Image.asset("assets/google.png", fit: BoxFit.contain,),
+      ),
     );
   }
 
@@ -544,7 +513,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
             ],
           ),
           SizedBox(height: 30.0.h,),
-          Text("or continue with", style: Font_Style.productsans_medium(null, 56),),
+          Text("or continue with", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.5), 56),),
           SizedBox(height: 30.0.h,),
           socialMediaLogin(),
         ],

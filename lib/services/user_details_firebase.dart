@@ -37,7 +37,6 @@ class UserDetails {
     data.putIfAbsent("sem", () => profile.sem);
     data.putIfAbsent("email", () => profile.email);
     data.putIfAbsent("phone", () => profile.phone);
-    data.putIfAbsent("name", () => profile.name);
 
     FirebaseDatabase.instance.reference().child('Users/${FirebaseAuth.instance.currentUser.uid}')
         .update(data);
