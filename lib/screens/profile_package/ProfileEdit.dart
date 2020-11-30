@@ -270,7 +270,7 @@ class ProfileEditState extends State<ProfileEdit>{
         borderRadius: BorderRadius.circular(5),
       ),
       child: DropdownButtonFormField<String>(
-        value: dropdownValue.trim() == "" ? null : dropdownValue,
+        value: dropdownValue,
         hint: Text("$hint", style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
         icon: Icon(Icons.arrow_drop_down, color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
         iconSize: 24,

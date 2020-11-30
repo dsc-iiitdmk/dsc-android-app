@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -23,6 +24,7 @@ class GoogleAuth{
     if(_user != null){
       callback(false,"1");
 
+      await FirebaseDatabase.instance.reference().child('Users/${FirebaseAuth.instance.currentUser.uid}/email').set(_user.email);
       UserDetails.getUserId(context);
 
       Navigator.push(context,
