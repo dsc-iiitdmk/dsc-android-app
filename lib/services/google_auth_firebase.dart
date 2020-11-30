@@ -1,3 +1,4 @@
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuth{
+
+  static Profile userProfile = new Profile();
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static User _user;
@@ -24,11 +27,25 @@ class GoogleAuth{
       callback(false,"1");
 
       UserDetails.getUserId(context);
+      updateUserDb();
 
       Navigator.push(context,
         MaterialPageRoute(builder: (context) =>
             BottomNav(currentIndex: 2,)),);
     }
+  }
+
+  static void updateUserDb() async{
+    userProfile.email = UserDetails.firebaseUser.email.toString();
+    userProfile.name = UserDetails.firebaseUser.displayName.toString();
+    userProfile.phone = userProfile.phone == null || userProfile.phone == "" ? "" : userProfile.phone;
+    userProfile.sem = userProfile.sem == null || userProfile.sem == "" ? "" : userProfile.sem;
+    userProfile.branch = userProfile.branch == null || userProfile.branch == "" ? "" : userProfile.branch;
+    userProfile.state = userProfile.state == null || userProfile.state == "" ? "" : userProfile.state;
+    userProfile.dist = userProfile.dist == null || userProfile.dist == "" ? "" : userProfile.dist;
+
+    print(userProfile);
+    await UserDetails.updateUserProfile(userProfile);
   }
 
   static Future<void> handleGoogleSignOut() async {

@@ -1,10 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class Profile{
-  String email, phone, state, dist, branch, sem;
+  String email, name, phone, state, dist, branch, sem;
 
   String getSem(){
     return sem;
+  }
+
+  String getName() {
+    return name;
   }
 
   String getEmail(){
@@ -25,6 +29,10 @@ class Profile{
 
   void setEmail(String email){
     this.email = email;
+  }
+
+  void setName(String name){
+    this.name = name;
   }
 
   void setPhone(String phone){
@@ -48,7 +56,7 @@ class Profile{
   }
 
   Profile();
-  Profile.load(this.email, this.phone, this.state, this.dist, this.sem, this.branch);
+  Profile.load(this.email, this.name, this.phone, this.state, this.dist, this.sem, this.branch);
   Profile.fromSnapShot(DataSnapshot snapshot){
     this.state = snapshot.value['state'];
     this.dist = snapshot.value['dist'];
@@ -56,5 +64,6 @@ class Profile{
     this.branch = snapshot.value['branch'];
     this.phone = snapshot.value['phone'];
     this.email = snapshot.value['email'];
+    this.name = snapshot.value['name'];
   }
 }

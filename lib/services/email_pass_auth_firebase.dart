@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,9 @@ import 'package:progress_state_button/progress_button.dart';
 import 'package:flutter/material.dart';
 
 class EmailPasswordAuth {
+
+  static Profile userProfile = new Profile();
+
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future signInWithEmailAndPassword(String email, String password, BuildContext context, callback) async {
@@ -97,6 +101,7 @@ class EmailPasswordAuth {
                   if(user != null && user.emailVerified){
                     user.updateProfile(displayName: name);
                     UserDetails.getUserId(context);
+                    updateUserDb();
                     Navigator.of(context).pop();
                     Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
@@ -112,6 +117,19 @@ class EmailPasswordAuth {
       print(e.toString());
     }
   }
+
+  static void updateUserDb() async{
+    userProfile.email = FirebaseAuth.instance.currentUser.email;
+    userProfile.name = FirebaseAuth.instance.currentUser.displayName;
+    userProfile.phone = userProfile.phone == null || userProfile.phone == "" ? "" : userProfile.phone;
+    userProfile.sem = userProfile.sem == null || userProfile.sem == "" ? "" : userProfile.sem;
+    userProfile.branch = userProfile.branch == null || userProfile.branch == "" ? "" : userProfile.branch;
+    userProfile.state = userProfile.state == null || userProfile.state == "" ? "" : userProfile.state;
+    userProfile.dist = userProfile.dist == null || userProfile.dist == "" ? "" : userProfile.dist;
+
+    await UserDetails.updateUserProfile(userProfile);
+  }
+
   static Future resetPassword(String email,context) async{
     try{
       await _auth.sendPasswordResetEmail(email: email);
