@@ -12,7 +12,9 @@ class EventForm extends StatefulWidget {
 }
 
 class _EventFormState extends State<EventForm> {
-  
+
+  final _registrationFormKey = GlobalKey<FormState>();
+
   TextEditingController _dynamicTextController = new TextEditingController();
   TextEditingController _dynamicNumberController = new TextEditingController();
   bool checkedValue = true;
@@ -22,7 +24,6 @@ class _EventFormState extends State<EventForm> {
   @override
   Widget build(BuildContext context) {
     final EventForm eventFormArgs = ModalRoute.of(context).settings.arguments;
-    print(eventFormArgs.event);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,12 +59,13 @@ class _EventFormState extends State<EventForm> {
                   child: Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
+                    padding: EdgeInsets.only(left: 15.0.w, right: 15.0.w, top: 40.0.h, bottom: 8.0.h),
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
                           commonEventFormCardView(eventFormArgs.event),
                           dynamicFormCardView(),
+                          SizedBox(height: 60.0.h,),
                         ],
                       ),
                     ),
@@ -119,88 +121,107 @@ class _EventFormState extends State<EventForm> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        child: Column(
-          children: <Widget>[
-            Text("Registration Form", style: Font_Style.productsans_SemiBold_underline(Colors.blue, 56),),
-            SizedBox(height: 60.0.h,),
-            TextFormField(
-              validator: (val){
-                return val.length <= 10 ? "Too short" : "";
-              },
-              scrollPadding: EdgeInsets.all(25),
-              maxLines: 5,
-              minLines: 1,
-              controller: _dynamicTextController,
-              decoration: Font_Style.setLabelAllBorders("Enter Details", null, null, context),
-              keyboardType: TextInputType.text,
-              cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
-              style:  Font_Style.textfield_style(),
-            ),
-            SizedBox(height: 40.0.h,),
-            TextFormField(
-              validator: (val){
-                return val.length <= 2 ? "Too short" : "";
-              },
-              scrollPadding: EdgeInsets.all(25),
-              maxLines: 2,
-              minLines: 1,
-              controller: _dynamicNumberController,
-              decoration: Font_Style.setLabelAllBorders("Enter Number", null, null, context),
-              keyboardType: TextInputType.number,
-              cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
-              style:  Font_Style.textfield_style(),
-            ),
-            SizedBox(height: 40.0.h,),
-            CheckboxListTile(
-              title: Text("Title Text", style: Font_Style.productsans_medium(null, 48),),
-              value: checkedValue,
-              onChanged: (newValue) {
-                setState(() {
-                  checkedValue = newValue;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              activeColor: Colors.teal,
-              checkColor: Colors.white,
-            ),
-            Divider(),
-            SizedBox(height: 20.0.h,),
-            Align(
-              alignment: Alignment.centerLeft,
-                child: Text("Select Any One :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
-            SizedBox(height: 20.0.h,),
-            ListView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: 3,
-              itemBuilder: (context, i) {
-                return _radioButton("Item ${i}", i);
-              },
-            ),
-            Divider(),
-            SizedBox(height: 20.0.h,),
-            Align(
-              alignment: Alignment.centerLeft,
-                child: Text("Select Range :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
-            SizedBox(height: 20.0.h,),
-            RangeSlider(
-              min: 1,
-              max: 5,
-              divisions: 5,
-              activeColor: Colors.teal,
-              values: _currentRangeValues,
-              labels: RangeLabels(
-                _currentRangeValues.start.round().toString(),
-                _currentRangeValues.end.round().toString(),
+        child: Form(
+          key: _registrationFormKey,
+          child: Column(
+            children: <Widget>[
+              Text("Registration Form", style: Font_Style.productsans_SemiBold_underline(Colors.blue, 56),),
+              SizedBox(height: 60.0.h,),
+              TextFormField(
+                validator: (val){
+                  return val.length <= 10 ? "Too short" : "";
+                },
+                scrollPadding: EdgeInsets.all(25),
+                maxLines: 5,
+                minLines: 1,
+                controller: _dynamicTextController,
+                decoration: Font_Style.setLabelAllBorders("Enter Details", null, null, context),
+                keyboardType: TextInputType.text,
+                cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
+                style:  Font_Style.textfield_style(),
               ),
-              onChanged: (RangeValues values) {
-                setState(() {
-                  _currentRangeValues = values;
-                });
-              },
-            ),
-          ],
+              SizedBox(height: 40.0.h,),
+              TextFormField(
+                validator: (val){
+                  return val.length <= 2 ? "Too short" : "";
+                },
+                scrollPadding: EdgeInsets.all(25),
+                maxLines: 2,
+                minLines: 1,
+                controller: _dynamicNumberController,
+                decoration: Font_Style.setLabelAllBorders("Enter Number", null, null, context),
+                keyboardType: TextInputType.number,
+                cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
+                style:  Font_Style.textfield_style(),
+              ),
+              SizedBox(height: 40.0.h,),
+              CheckboxListTile(
+                title: Text("Title Text", style: Font_Style.productsans_medium(null, 48),),
+                value: checkedValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    checkedValue = newValue;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.trailing,
+                activeColor: Colors.teal,
+                checkColor: Colors.white,
+              ),
+              Divider(),
+              SizedBox(height: 20.0.h,),
+              Align(
+                alignment: Alignment.centerLeft,
+                  child: Text("Select Any One :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
+              SizedBox(height: 20.0.h,),
+              ListView.builder(
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: 3,
+                itemBuilder: (context, i) {
+                  return _radioButton("Item ${i}", i);
+                },
+              ),
+              Divider(),
+              SizedBox(height: 20.0.h,),
+              Align(
+                alignment: Alignment.centerLeft,
+                  child: Text("Select Range :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
+              SizedBox(height: 20.0.h,),
+              RangeSlider(
+                min: 1,
+                max: 5,
+                divisions: 5,
+                activeColor: Colors.teal,
+                values: _currentRangeValues,
+                labels: RangeLabels(
+                  _currentRangeValues.start.round().toString(),
+                  _currentRangeValues.end.round().toString(),
+                ),
+                onChanged: (RangeValues values) {
+                  setState(() {
+                    _currentRangeValues = values;
+                  });
+                },
+              ),
+              SizedBox(height: 80.0.h,),
+              RaisedButton(
+                onPressed: () {
+                  if(_registrationFormKey.currentState.validate()) {
+                    print("Submit");
+                  }
+                },
+                textColor: Colors.white,
+                color: Colors.teal,
+                padding: EdgeInsets.symmetric(
+                    vertical: 8.0, horizontal: 55.0),
+                child: Text(
+                  "Submit",
+                  style: Font_Style.productsans_Bold(Colors.white, 52),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
