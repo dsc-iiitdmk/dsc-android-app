@@ -150,7 +150,7 @@ class ProfileEditState extends State<ProfileEdit>{
                        child: Column(
                          children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
                            profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.phone),
-                           profileEntry("Email Address", true, _emailTextController, 45, TextInputType.phone),
+                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.phone),
                            profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
                            profileDropDownEntry(
                                <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']
@@ -270,7 +270,7 @@ class ProfileEditState extends State<ProfileEdit>{
         borderRadius: BorderRadius.circular(5),
       ),
       child: DropdownButtonFormField<String>(
-        value: dropdownValue,
+        value: dropdownValue.trim() == "" ? null : dropdownValue,
         hint: Text("$hint", style: Font_Style.productsans_SemiBold(userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.primaryColor.withOpacity(0.7), 45),),
         icon: Icon(Icons.arrow_drop_down, color: userProfile.state == null && hint == "Select District" ? Font_Style.primaryColor.withOpacity(0.2) : Font_Style.secondaryColor, size: 24.0,),
         iconSize: 24,
