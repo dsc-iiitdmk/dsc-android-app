@@ -29,25 +29,11 @@ class GoogleAuth{
 
       await FirebaseDatabase.instance.reference().child('Users/${FirebaseAuth.instance.currentUser.uid}/email').set(_user.email);
       UserDetails.getUserId(context);
-      updateUserDb();
 
       Navigator.push(context,
         MaterialPageRoute(builder: (context) =>
             BottomNav(currentIndex: 2,)),);
     }
-  }
-
-  static void updateUserDb() async{
-    userProfile.email = UserDetails.firebaseUser.email.toString();
-    userProfile.name = UserDetails.firebaseUser.displayName.toString();
-    userProfile.phone = userProfile.phone == null || userProfile.phone == "" ? "" : userProfile.phone;
-    userProfile.sem = userProfile.sem == null || userProfile.sem == "" ? "" : userProfile.sem;
-    userProfile.branch = userProfile.branch == null || userProfile.branch == "" ? "" : userProfile.branch;
-    userProfile.state = userProfile.state == null || userProfile.state == "" ? "" : userProfile.state;
-    userProfile.dist = userProfile.dist == null || userProfile.dist == "" ? "" : userProfile.dist;
-
-    print(userProfile);
-    await UserDetails.updateUserProfile(userProfile);
   }
 
   static Future<void> handleGoogleSignOut() async {
