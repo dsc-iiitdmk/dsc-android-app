@@ -14,9 +14,8 @@ class LoadMembersData extends ChangeNotifier{
   LoadMembersData();
 
   void loadMembers(){
-    if(membersList == null) {
-      membersList = HashMap();
       databaseRef.child("members").once().then((snapshot) {
+        membersList = HashMap();
         Map<dynamic, dynamic> data = snapshot.value;
         data.forEach((key, value) {
           List<dynamic> list = value;
@@ -29,8 +28,5 @@ class LoadMembersData extends ChangeNotifier{
         dataLoaded = true;
         notifyListeners();
       });
-    }else{
-      notifyListeners();
-    }
   }
 }

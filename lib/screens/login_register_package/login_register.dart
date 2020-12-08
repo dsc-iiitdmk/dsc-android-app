@@ -1,6 +1,8 @@
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/components/bottom_nav.dart';
+import 'package:dsc_iiitdmkl/screens/components/customprogressbutton.dart';
+import 'package:dsc_iiitdmkl/screens/components/spinloader.dart';
 import 'package:dsc_iiitdmkl/services/email_pass_auth_firebase.dart';
 import 'package:dsc_iiitdmkl/services/google_auth_firebase.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
@@ -189,16 +191,16 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       onTap: (){
         GoogleAuth.handleGoogleSignIn(context,spincallbackgoogle);
       },
-      child: Container(
-        width: 128.h,
-        height: 128.h,
+      child: isLoadingGoogle ? spinLoader(150.h, 150.h) : Container(
+        width: 150.h,
+        height: 150.h,
         padding: EdgeInsets.all(24.h),
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
                   color: Colors.black45, blurRadius: 3)
             ],
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(50),
             color: Colors.white),
         child: Image.asset("assets/google.png", fit: BoxFit.contain,),
       ),
@@ -366,54 +368,10 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
           Positioned(
             top: _currentPage == 'Login' ? 35.0 : 60.0,
             right: 20,
-            child: Container(
-              width: 60.0,
-              height: 60.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [_colorBtn1, _colorBtn1, _colorBtn2],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(208, 209, 217, 0.7),
-                    offset: Offset(0.0, 5.0),
-                    blurRadius: 10.0,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Material(
-                clipBehavior: Clip.hardEdge,
-                color: Colors.transparent,
-                child: InkWell(
-                  splashColor: Colors.white54,
-                  borderRadius: BorderRadius.circular(30.0),
-                  onTap: () {
-                    if(_currentPage == "Register") {
-                      if (_registerFormKey.currentState.validate()) {
-                        onRegisterPress();
-                      }
-                    }
-                    else {
-                      if (_loginFormKey.currentState.validate()) {
-                        onLoginPress();
-                      }
-                    }
-                  },
-                  child: Center(
-                    child: Icon(
-                      _currentPage == 'Login'
-                          ? Icons.arrow_forward
-                          : Icons.check,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+            child: Center(
+              child: _currentPage == 'Login'
+                    ? customButtonWidget(context, Icons.arrow_forward, stateOnlyText, onLoginPress)
+                    : customButtonWidget(context, Icons.check, stateOnlyText, onRegisterPress),
             ),
           ),
         ],
@@ -620,7 +578,7 @@ class _LoginRegisterState extends State<LoginRegister> with TickerProviderStateM
       });
     }
   }
-  
+
   void buttonCallback(buttonState,response) {
     setState(() {
       if(response!=null) {
