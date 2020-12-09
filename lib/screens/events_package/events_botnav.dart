@@ -1,7 +1,7 @@
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/events_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dsc_iiitdmkl/screens/events_package/event_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -128,7 +128,10 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
         borderRadius: BorderRadius.circular(20),
       ),
       child: InkWell(
-        onTap: () async {await launch(event.formID);},
+        onTap: () async {
+          //await launch(event.formID);
+          Navigator.pushNamed(context, "event_form", arguments: EventForm(event: event));
+          },
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: _height / 5.9,

@@ -37,6 +37,4 @@ class LoadHomeData extends ChangeNotifier{
   //     notifyListeners();
   //   });
   // }
-
-
 }

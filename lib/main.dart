@@ -2,6 +2,7 @@ import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/events_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/home_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/members_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/project_data.dart';
+import 'package:dsc_iiitdmkl/screens/events_package/event_form.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/login_register.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         'login_register': (context) => LoginRegister(),
         'forgot_pass': (context) => ForgotPassword(),
         'profile_edit': (context) => ProfileEdit(),
+        'event_form': (context) => EventForm(),
       },
       initialRoute: '/',
     );

@@ -84,6 +84,15 @@ class Font_Style {
       fontSize: f3_19==null?ScreenUtil().setSp(19,allowFontScalingSelf: true):ScreenUtil().setSp(f3_19,allowFontScalingSelf: true),
     );
   }
+  static TextStyle productsans_Bold_Underline(Color primary,double f3_19){
+    return TextStyle(
+      fontFamily: "ProductSans",
+      fontWeight: FontWeight.w700,
+      color: primary==null?primaryColor:primary,
+      decoration: TextDecoration.underline,
+      fontSize: f3_19==null?ScreenUtil().setSp(19,allowFontScalingSelf: true):ScreenUtil().setSp(f3_19,allowFontScalingSelf: true),
+    );
+  }
   static TextStyle productsans_SemiBold(Color primary,double f5_14){
     return TextStyle(
       fontFamily: "ProductSans",

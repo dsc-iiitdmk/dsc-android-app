@@ -57,14 +57,13 @@ class ProfileEditState extends State<ProfileEdit>{
         userProfile = value;
         _emailTextController.text = userProfile.email;
         _phoneTextController.text = userProfile.phone;
-        _studentNameTextController.text = FirebaseAuth.instance.currentUser.displayName;
+        _studentNameTextController.text = UserDetails.firebaseUser.displayName;
       });
     });
   }
 
   @override
   Widget build(BuildContext context){
-
    return Scaffold(
      appBar: AppBar(
        leading: InkWell(
@@ -152,8 +151,8 @@ class ProfileEditState extends State<ProfileEdit>{
                      child: SingleChildScrollView(
                        child: Column(
                          children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
-                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.phone),
-                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.phone),
+                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.emailAddress),
+                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.text),
                            profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
                            profileDropDownEntry(
                                <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']

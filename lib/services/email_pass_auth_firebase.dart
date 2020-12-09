@@ -103,6 +103,7 @@ class EmailPasswordAuth {
                     user.updateProfile(displayName: name);
                     await FirebaseDatabase.instance.reference().child('Users/${FirebaseAuth.instance.currentUser.uid}/email').set(email);
                     UserDetails.getUserId(context);
+                    updateUserDb();
                     Navigator.of(context).pop();
                     Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
@@ -117,6 +118,12 @@ class EmailPasswordAuth {
     }catch(e){
       print(e.toString());
     }
+  }
+
+  static void updateUserDb() async{
+    userProfile.email = FirebaseAuth.instance.currentUser.email;
+
+    await UserDetails.updateUserProfile(userProfile);
   }
 
   static Future resetPassword(String email,context) async{

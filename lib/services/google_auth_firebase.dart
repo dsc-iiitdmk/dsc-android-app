@@ -29,11 +29,18 @@ class GoogleAuth{
 
       await FirebaseDatabase.instance.reference().child('Users/${FirebaseAuth.instance.currentUser.uid}/email').set(_user.email);
       UserDetails.getUserId(context);
+      updateUserDb();
 
       Navigator.push(context,
         MaterialPageRoute(builder: (context) =>
             BottomNav(currentIndex: 2,)),);
     }
+  }
+
+  static void updateUserDb() async{
+    userProfile.email = UserDetails.firebaseUser.email.toString();
+
+    await UserDetails.updateUserProfile(userProfile);
   }
 
   static Future<void> handleGoogleSignOut() async {
