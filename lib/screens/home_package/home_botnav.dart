@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/home_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Home.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
@@ -44,6 +45,7 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
       );
       _totalTextController.forward();
     });
+    Provider.of<FormData_Data>(context, listen: false).loadMyForms();
   }
 
   @override

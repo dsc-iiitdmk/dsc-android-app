@@ -5,7 +5,7 @@ class Events{
   String name, desc, img;
   int startTime, endTime; // millis
   String formID; //null if no form
-  bool formAllowForeign; // should we allow clg outsiders to register?
+  bool formAllowForeign, editable; // should we allow clg outsiders to register?
 
   String getName(){
     return name;
@@ -40,7 +40,7 @@ class Events{
   }
 
   Events();
-  Events.load(this.name, this.desc, this.startTime, this.endTime, this.formID, this.img, this.formAllowForeign);
+  Events.load(this.name, this.desc, this.startTime, this.endTime, this.formID, this.img, this.formAllowForeign, this.editable);
   Events.fromJSON(String json){
     dynamic snapshot = jsonDecode(json);
     name = snapshot['name'];
@@ -50,6 +50,6 @@ class Events{
     formID = snapshot['formID'];
     img = snapshot['img'];
     formAllowForeign = snapshot['allowForeign'];
+    editable = snapshot['formEditable'];
   }
-
 }

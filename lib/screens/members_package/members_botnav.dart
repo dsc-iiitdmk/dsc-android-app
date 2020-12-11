@@ -40,7 +40,7 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
             children: [
               SizedBox(height: 10,),
               Container(
-                height: 100,
+                height: 120,
                 child: PageView.builder(
                   itemCount: Provider.of<LoadMembersData>(context).membersList.length,
                   controller: PageController(viewportFraction: 0.4),

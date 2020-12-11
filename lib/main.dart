@@ -6,12 +6,17 @@ import 'package:dsc_iiitdmkl/screens/events_package/event_form.dart';
 import 'package:dsc_iiitdmkl/screens/home_package/home_botnav.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/forgot_pass.dart';
 import 'package:dsc_iiitdmkl/screens/login_register_package/login_register.dart';
+import 'package:dsc_iiitdmkl/screens/myreg_package/MyRegistration.dart';
 import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/developers.dart';
+import 'package:dsc_iiitdmkl/screens/profile_package/privacy_policy.dart';
 import 'package:dsc_iiitdmkl/screens/welcome_package/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'Backend/ChangeNotifiers/developers_data.dart';
+import 'Backend/ChangeNotifiers/form_data.dart';
 import 'ThemeData/fontstyle.dart';
 
 void main() async {
@@ -24,23 +29,16 @@ void main() async {
       ChangeNotifierProvider<LoadMembersData>(create: (_) => LoadMembersData()),
       ChangeNotifierProvider<LoadProjectData>(create: (_) => LoadProjectData()),
       ChangeNotifierProvider<LoadEventsData>(create: (_) => LoadEventsData()),
+      ChangeNotifierProvider<FormData_Data>(create: (_) => FormData_Data()),
+      ChangeNotifierProvider<LoadDevelopersData>(create: (_) => LoadDevelopersData(),)
     ],
     child: MyApp(),
   ));
-
-  // runApp(ChangeNotifierProvider<LoadHomeData>(
-  //   create: (_) => LoadHomeData(),
-  //   child: ChangeNotifierProvider<LoadMembersData>(
-  //     create: (_) => LoadMembersData(),
-  //     child: MyApp(),
-  //   ),
-  // ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'DSC IIITDMKL',
       debugShowCheckedModeBanner: false,
@@ -58,6 +56,9 @@ class MyApp extends StatelessWidget {
         'forgot_pass': (context) => ForgotPassword(),
         'profile_edit': (context) => ProfileEdit(),
         'event_form': (context) => EventForm(),
+        'my_registration': (context) => MyRegistration(),
+        'privacy_policy': (context) => PrivacyPolicy(),
+        'developers': (context) => Developers(),
       },
       initialRoute: '/',
     );

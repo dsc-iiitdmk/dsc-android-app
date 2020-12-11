@@ -122,15 +122,24 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
       child: InkWell(
         onTap: () {
           switch(title) {
-            case "Change Password":
-              Navigator.pushNamed(context, "forgot_pass");
-              break;
             case "My Profile":
               Navigator.push(
                   context,
                   PageRouteBuilder(
                       transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, __, ___) => ProfileEdit()));
+              break;
+            case "My Registrations":
+              Navigator.pushNamed(context, "my_registration");
+              break;
+            case "Change Password":
+              Navigator.pushNamed(context, "forgot_pass");
+              break;
+            case "Privacy Policy":
+              Navigator.pushNamed(context, "privacy_policy");
+              break;
+            case "Developers":
+              Navigator.pushNamed(context, "developers");
               break;
             default:
               print("default");

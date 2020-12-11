@@ -14,19 +14,24 @@ class LoadMembersData extends ChangeNotifier{
   LoadMembersData();
 
   void loadMembers(){
-      databaseRef.child("members").once().then((snapshot) {
-        membersList = HashMap();
-        Map<dynamic, dynamic> data = snapshot.value;
-        data.forEach((key, value) {
-          List<dynamic> list = value;
-          List<Member> mList = List();
-          for (dynamic d in list) {
-            mList.add(Member.fromJSON(jsonEncode(d)));
-          }
-          membersList.putIfAbsent(key, () => mList);
-        });
-        dataLoaded = true;
-        notifyListeners();
+      databaseRef.child("members")
+          .onValue
+          .listen((event) {
+              membersList = HashMap();
+              Map<dynamic, dynamic> data = event.snapshot.value;
+              data.forEach((key, value) {
+                List<dynamic> list = value;
+                List<Member> mList = List();
+                for (dynamic d in list) {
+                  mList.add(Member.fromJSON(jsonEncode(d)));
+                }
+                membersList.putIfAbsent(key, () => mList);
+              });
+              dataLoaded = true;
+              notifyListeners();
+      })
+          .onError((err){
+         print('Error Loading Members : ' + err.toString());
       });
   }
 }
