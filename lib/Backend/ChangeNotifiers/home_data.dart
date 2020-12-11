@@ -16,6 +16,7 @@ class LoadHomeData extends ChangeNotifier{
   void loadHomeData(){
     databaseRef.child('master').once().then((value){
       homeData = Home.fromSnapShot(value);
+      print("home data loaded");
       notifyListeners();
     }).catchError((err){
       print(err.toString());
