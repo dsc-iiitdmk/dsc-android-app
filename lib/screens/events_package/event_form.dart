@@ -1,29 +1,28 @@
+import 'dart:collection';
+
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
+import 'package:dsc_iiitdmkl/Backend/DataClasses/FormData.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
+import 'package:provider/provider.dart';
 
 class EventForm extends StatefulWidget {
-  final Events event;
-  EventForm({this.event});
-
   @override
   _EventFormState createState() => _EventFormState();
 }
 
 class _EventFormState extends State<EventForm> {
-
   final _eventRegistrationFormKey = GlobalKey<FormState>();
 
-  TextEditingController _dynamicTextController = new TextEditingController();
-  TextEditingController _dynamicNumberController = new TextEditingController();
-  bool checkedValue = true;
-  int groupValue = 0;
-  RangeValues _currentRangeValues = const RangeValues(1, 3);
-  
   @override
   Widget build(BuildContext context) {
-    final EventForm eventFormArgs = ModalRoute.of(context).settings.arguments;
+    final HashMap<String, dynamic> eventFormArgs = ModalRoute.of(context).settings.arguments;
+    final Events eventData = eventFormArgs['event'];
+    Provider.of<FormData_Data>(context).loadForm(eventData.formID);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +49,7 @@ class _EventFormState extends State<EventForm> {
                   height: MediaQuery.of(context).size.height / 4.5,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: new NetworkImage(eventFormArgs.event.img),
+                      image: new NetworkImage(Provider.of<FormData_Data>(context).formData != null ? Provider.of<FormData_Data>(context).formData.topImage : eventData.img),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -63,8 +62,8 @@ class _EventFormState extends State<EventForm> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          commonEventFormCardView(eventFormArgs.event),
-                          dynamicFormCardView(),
+                          Provider.of<FormData_Data>(context).formData != null ? commonEventFormCardView(eventData, Provider.of<FormData_Data>(context).formData,  eventFormArgs['edit'], eventFormArgs['responseTime']) : SizedBox(height: 0,),
+                          Provider.of<FormData_Data>(context).formData != null ? dynamicFormCardView(Provider.of<FormData_Data>(context).formData, eventFormArgs['edit']) : SizedBox(height: 0,),
                           SizedBox(height: 60.0.h,),
                         ],
                       ),
@@ -78,7 +77,7 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-  Widget commonEventFormCardView(Events event){
+  Widget commonEventFormCardView(Events event, FormData data, bool edit, int responseTime){
     return Card(
       elevation: 7.0,
       margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
@@ -94,20 +93,26 @@ class _EventFormState extends State<EventForm> {
         ),
         child: Column(
           children: <Widget>[
-            Text(event.name, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold_Underline(null, 55),),
+            Text(data.title, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold_Underline(null, 55),),
             SizedBox(height: 50.0.h,),
-            Text(event.desc,textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
-            SizedBox(height: 30.0.h,),
-            Text("Start Time : ${DateTime.fromMillisecondsSinceEpoch(event.startTime).toString().substring(12,16)}, ${DateTime.fromMillisecondsSinceEpoch(event.startTime).toString().substring(0,10)}",textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_SemiBold(Colors.teal, 42),),
-            SizedBox(height: 20.0.h,),
-            Text("End Time : ${DateTime.fromMillisecondsSinceEpoch(event.endTime).toString().substring(12,16)}, ${DateTime.fromMillisecondsSinceEpoch(event.endTime).toString().substring(0,10)}",textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_SemiBold(Colors.teal, 42),),
+            Column(
+              children:  !edit ? [
+                Text("Submitted On : ${DateTime.fromMillisecondsSinceEpoch(responseTime).toString()}",textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_SemiBold(Colors.teal, 42),),
+              ] : [
+                Text(data.desc,textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
+                SizedBox(height: 30.0.h,),
+                Text("Start Time : ${DateTime.fromMillisecondsSinceEpoch(event.startTime).toString().substring(12,16)}, ${DateTime.fromMillisecondsSinceEpoch(event.startTime).toString().substring(0,10)}",textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_SemiBold(Colors.teal, 42),),
+                SizedBox(height: 20.0.h,),
+                Text("End Time : ${DateTime.fromMillisecondsSinceEpoch(event.endTime).toString().substring(12,16)}, ${DateTime.fromMillisecondsSinceEpoch(event.endTime).toString().substring(0,10)}",textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_SemiBold(Colors.teal, 42),),
+              ],
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget dynamicFormCardView() {
+  Widget dynamicFormCardView(FormData data, bool isEditable) {
     return Card(
       elevation: 7.0,
       margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
@@ -126,98 +131,21 @@ class _EventFormState extends State<EventForm> {
           child: Column(
             children: <Widget>[
               Text("Registration Form", style: Font_Style.productsans_SemiBold_underline(Colors.blue, 56),),
-              SizedBox(height: 60.0.h,),
-              TextFormField(
-                validator: (val){
-                  return val.length <= 10 ? "Too short" : null;
-                },
-                scrollPadding: EdgeInsets.all(25),
-                maxLength: 500,
-                maxLines: 5,
-                minLines: 1,
-                controller: _dynamicTextController,
-                decoration: Font_Style.setLabelAllBorders("Enter Details", null, null, context),
-                keyboardType: TextInputType.text,
-                cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
-                style:  Font_Style.textfield_style(),
-              ),
-              SizedBox(height: 40.0.h,),
-              TextFormField(
-                validator: (val){
-                  return val.length <= 2 ? "Too short" : null;
-                },
-                scrollPadding: EdgeInsets.all(25),
-                maxLength: 30,
-                maxLines: 2,
-                minLines: 1,
-                controller: _dynamicNumberController,
-                decoration: Font_Style.setLabelAllBorders("Enter Number", null, null, context),
-                keyboardType: TextInputType.number,
-                cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
-                style:  Font_Style.textfield_style(),
-              ),
-              SizedBox(height: 40.0.h,),
-              CheckboxListTile(
-                title: Text("Title Text", style: Font_Style.productsans_medium(null, 48),),
-                value: checkedValue,
-                onChanged: (newValue) {
-                  setState(() {
-                    checkedValue = newValue;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.trailing,
-                activeColor: Colors.teal,
-                checkColor: Colors.white,
-              ),
-              Divider(),
-              SizedBox(height: 20.0.h,),
-              Align(
-                alignment: Alignment.centerLeft,
-                  child: Text("Select Any One :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
-              SizedBox(height: 20.0.h,),
-              ListView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: 3,
-                itemBuilder: (context, i) {
-                  return _radioButton("Item ${i}", i);
-                },
-              ),
-              Divider(),
-              SizedBox(height: 20.0.h,),
-              Align(
-                alignment: Alignment.centerLeft,
-                  child: Text("Select Range :", textAlign: TextAlign.left, textDirection: TextDirection.ltr, overflow: TextOverflow.clip, style: Font_Style.productsans_SemiBold_underline(Colors.blue, 46),)),
-              SizedBox(height: 20.0.h,),
-              RangeSlider(
-                min: 1,
-                max: 5,
-                divisions: 5,
-                activeColor: Colors.teal,
-                values: _currentRangeValues,
-                labels: RangeLabels(
-                  _currentRangeValues.start.round().toString(),
-                  _currentRangeValues.end.round().toString(),
-                ),
-                onChanged: (RangeValues values) {
-                  setState(() {
-                    _currentRangeValues = values;
-                  });
-                },
-              ),
               SizedBox(height: 80.0.h,),
-              RaisedButton(
+              Column(
+                children: getFormFields(data, isEditable),
+              ),
+              isEditable ? RaisedButton(
                 onPressed: _submitRegistrationForm,
                 textColor: Colors.white,
-                color: Colors.teal,
+                color: isFormValid() ? Colors.teal : Colors.grey,
                 padding: EdgeInsets.symmetric(
                     vertical: 8.0, horizontal: 55.0),
                 child: Text(
                   "Submit",
                   style: Font_Style.productsans_Bold(Colors.white, 52),
                 ),
-              ),
+              ) : SizedBox(height: 10,),
               SizedBox(height: 20.0.h,),
             ],
           ),
@@ -226,23 +154,171 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-  Widget _radioButton(String title, int value) {
-    return RadioListTile(
-      value: value,
-      groupValue: groupValue,
-      onChanged: (val) {
-        setState(() {
-          groupValue = val;
+  List<Widget> getFormFields(FormData data, bool isEditable){
+    return data.entries.map<Widget>((e){
+      int index = Provider.of<FormData_Data>(context, listen: false).formData.entries.indexOf(e);
+      if(e.type == FormEntry.ENTRY_TEXT || e.type == FormEntry.ENTRY_NUMBER){
+        return Widget_FormEntryText(e, Provider.of<FormData_Data>(context, listen: false).formData.responses.elementAt(index), isEditable, (val){
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.removeAt(index);
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.insert(index, val);
+          print('Text or Number Val : ' + val.toString());
         });
-      },
-      activeColor: Colors.teal,
-      title: Text(title),
+      }else if(e.type == FormEntry.ENTRY_CHECKBOX ){
+        return Widget_FormEntryCheckGroup(e, Provider.of<FormData_Data>(context, listen: false).formData.responses.elementAt(index),isEditable, (val){
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.removeAt(index);
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.insert(index, val);
+          print('Check Val : ' + val.toString());
+          setState(() {});
+        });
+      }else if(e.type == FormEntry.ENTRY_RADIO){
+        return Widget_FormEntryRadioGroup(e, Provider.of<FormData_Data>(context, listen: false).formData.responses.elementAt(index), isEditable, (val){
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.removeAt(index);
+          Provider.of<FormData_Data>(context, listen: false).formData.responses.insert(index, val);
+          print('Radio Val : ' + val.toString());
+          setState(() {});
+        });
+      }
+    }).toList();
+  }
+
+  // common for text and number
+  Widget Widget_FormEntryText(FormEntry entry, String defVal, bool isEnabled, Function(dynamic) listener){
+    TextEditingController controller = new TextEditingController();
+    controller.text = defVal;
+
+    controller.addListener(() {
+      listener(controller.text);
+    });
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Text(entry.title, style: Font_Style.productsans_medium(Colors.black, 45),),
+        SizedBox(height: 10,),
+        TextFormField(
+          enabled: isEnabled,
+          scrollPadding: EdgeInsets.all(25),
+          maxLength: entry.inputLength,
+          maxLines: 5,
+          minLines: 1,
+          controller: controller,
+          decoration: Font_Style.setLabelAllBorders(null, null, null, context),
+          keyboardType: entry.type == FormEntry.ENTRY_TEXT ? TextInputType.text : TextInputType.number,
+          cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
+          style:  Font_Style.textfield_style(),
+        ),
+        Divider(),
+      ],
     );
   }
 
+  Widget Widget_FormEntryCheckGroup(FormEntry entry, dynamic defVal, bool isEnabled, Function(dynamic) listener){
+    List<bool> values = new List.filled(entry.checks.length, false, growable: true);
+    if(defVal != null) values = List<bool>.from(defVal, growable: true);
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Text(entry.title, style: Font_Style.productsans_medium(Colors.black, 45),),
+        SizedBox(height: 10,),
+        Column(
+          children: entry.checks.map<Widget>((e){
+            return CheckboxListTile(
+              selected: values.elementAt(entry.checks.indexOf(e)),
+              title: Text(e, style: Font_Style.productsans_medium(null, 48),),
+              value: values.elementAt(entry.checks.indexOf(e)),
+              onChanged: (newValue) {
+                // to disable when using view mode
+                if(!isEnabled) return;
+
+                values.removeAt(entry.checks.indexOf(e));
+                values.insert(entry.checks.indexOf(e), newValue);
+                print('Changing Check');
+                listener(values);
+              },
+              controlAffinity: ListTileControlAffinity.trailing,
+              activeColor: Colors.teal,
+              checkColor: Colors.white,
+            );
+          }).toList(),
+        ),
+        Divider(),
+      ],
+    );
+  }
+
+  Widget Widget_FormEntryRadioGroup(FormEntry entry, dynamic defVal, bool isEnabled, Function(dynamic) listener){
+
+    var groupVal = defVal;
+
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Text(entry.title, style: Font_Style.productsans_medium(Colors.black, 45),),
+        SizedBox(height: 10,),
+        Column(
+          children: entry.radios.map<Widget>((e){
+            return RadioListTile(
+              value: e,
+              groupValue: groupVal,
+              onChanged: (val) {
+                // to disable when using view mode
+                if(!isEnabled) return;
+
+                groupVal = val;
+                listener(groupVal);
+              },
+              activeColor: Colors.teal,
+              title: Text(e),
+            );
+          }).toList(),
+        ),
+        Divider(),
+      ],
+    );
+  }
+
+
+  //TODO ADD DIALOGS WITH LOADERS AND SUCCESS AND FAIL INDICATORS
   void _submitRegistrationForm() {
-    if(_eventRegistrationFormKey.currentState.validate()) {
-      print("Submit");
+    if(isFormValid()){
+      HashMap<String, dynamic> dataToSave = new HashMap();
+      dataToSave.putIfAbsent("time", () => DateTime.now().millisecondsSinceEpoch);
+      dataToSave.putIfAbsent("title", () => Provider.of<FormData_Data>(context, listen: false).formData.title);
+      dataToSave.putIfAbsent("formID", () => Provider.of<FormData_Data>(context, listen: false).formData.formID);
+      dataToSave.putIfAbsent("responses", () => Provider.of<FormData_Data>(context, listen: false).formData.responses);
+      print('saving!!!');
+      FirebaseDatabase.instance.reference()
+          .child("response/${FirebaseAuth.instance.currentUser.uid}/${dataToSave['formID']}/")
+          .set(dataToSave)
+      .then((value){
+        print('Success!!!!');
+        Navigator.of(context).pop();
+      })
+      .catchError((err){
+        print('Error Saving Response! : ' + err.toString());
+      });
     }
   }
+
+  // check for mandate fields
+  bool isFormValid(){
+    List<FormEntry> entries = Provider.of<FormData_Data>(context, listen: false).formData.entries;
+    List<dynamic> responses = Provider.of<FormData_Data>(context, listen: false).formData.responses;
+    bool mandateFullfilled = true;
+    for(FormEntry entry in entries){
+      if(entry.isMandate){
+        dynamic response =  responses.elementAt(entries.indexOf(entry));
+        if(response == null || response == "" || response == []){
+          mandateFullfilled = false;
+          break;
+        }
+      }
+    }
+    return mandateFullfilled;
+  }
+}
+
+abstract class OnFormFieldValueChange{
+  void OnValueChange(dynamic value);
 }

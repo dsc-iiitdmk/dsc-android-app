@@ -16,13 +16,17 @@ class LoadProjectData extends ChangeNotifier{
   LoadProjectData();
 
   void loadProjects(){
-      databaseRef.child("projects").once().then((snapshot){
-        projects = List();
-        List<dynamic> data = snapshot.value;
-        data.forEach((element) {
-          projects.add(Project.fromJSON(jsonEncode(element)));
-        });
-        notifyListeners();
+      databaseRef.child("projects").onValue
+          .listen((event) {
+            projects = List();
+            List<dynamic> data = event.snapshot.value;
+            data.forEach((element) {
+              projects.add(Project.fromJSON(jsonEncode(element)));
+            });
+            notifyListeners();
+      })
+          .onError((err){
+            print('Error Loading Projects : ' + err.toString());
       });
   }
 }

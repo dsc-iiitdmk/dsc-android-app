@@ -132,6 +132,9 @@ class _ProfileBotNavState extends State<ProfileBotNav> {
                       transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, __, ___) => ProfileEdit()));
               break;
+            case "My Registrations":
+              Navigator.pushNamed(context, "my_registration");
+              break;
             default:
               print("default");
           }

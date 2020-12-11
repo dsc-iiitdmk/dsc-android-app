@@ -1,7 +1,12 @@
+import 'dart:collection';
+
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/events_data.dart';
+import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
+import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/events_package/event_form.dart';
+import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -130,7 +135,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
       child: InkWell(
         onTap: () async {
           //await launch(event.formID);
-          Navigator.pushNamed(context, "event_form", arguments: EventForm(event: event));
+          OnEventClicked(event);
           },
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -148,5 +153,31 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
         ),
       ),
     );
+  }
+
+  void OnEventClicked(Events event) async {
+    Profile profile = await UserDetails.loadUserProfile();
+    if(profile.isThisOurCollegeStudent() || event.formAllowForeign){
+      if(Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs != null && Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs.contains(event.formID)){
+        if(event.editable){
+          openForm(event);
+        }else{
+          // TODO ADD DIALOG OR TOAST TO SAY "FORM IS NOT EDITABLE, GO TO MY REGISTRATIONS TO VIEW YOUR RESPONSES"
+          print('form not editable');
+        }
+      }else{
+        openForm(event);
+      }
+    }else{
+      // TODO ADD DIALOG OR TOAST TO SHOW OUTSIDE STUDENTS NOT ALLOWED
+      print('Sorry Outside students not allowed');
+    }
+  }
+
+  void openForm(Events event){
+    HashMap<String, dynamic> data = new HashMap();
+    data.putIfAbsent("event", () => event);
+    data.putIfAbsent("edit", () => true);
+    Navigator.pushNamed(context, "event_form", arguments: data);
   }
 }

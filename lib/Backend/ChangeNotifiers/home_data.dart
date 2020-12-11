@@ -10,31 +10,14 @@ class LoadHomeData extends ChangeNotifier{
 
   LoadHomeData();
 
-  // List<Member> membersList;
-  // List<Project> projectList;
-
   void loadHomeData(){
-    databaseRef.child('master').once().then((value){
-      homeData = Home.fromSnapShot(value);
-      notifyListeners();
-    }).catchError((err){
-      print(err.toString());
+    databaseRef.child('master').onValue
+        .listen((event) {
+        homeData = Home.fromSnapShot(event.snapshot);
+        notifyListeners();
+    })
+        .onError((err){
+          print('Error Loading Home Data : ' + err.toString());
     });
   }
-
-  // void loadMembers(){
-  //   databaseRef.child('members').once().then((snap){
-  //     List<dynamic> members = snap.value;
-  //     membersList = members.map((e) => Member.fromSnapShot(e));
-  //     notifyListeners();
-  //   });
-  // }
-  //
-  // void loadProjects(){
-  //   databaseRef.child('projects').once().then((snap){
-  //     List<dynamic> projects = snap.value;
-  //     projectList = projects.map((e) => Project.fromSnapShot(e));
-  //     notifyListeners();
-  //   });
-  // }
 }

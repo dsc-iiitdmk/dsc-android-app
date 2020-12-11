@@ -15,26 +15,27 @@ class LoadEventsData extends ChangeNotifier{
   LoadEventsData();
 
   void loadEvents(){
-    databaseRef.child("events").once().then((value){
+    databaseRef.child("events")
+        .onValue
+        .listen((event) {
       pastEvents = List();
-      ongoingEvents = List();
-      futureEvents = List();
-      List<dynamic> data = value.value;
-      int currentTime = DateTime.now().millisecondsSinceEpoch;
-      for(dynamic event in data){
-        Events e = Events.fromJSON(jsonEncode(event));
-        if(e.startTime < currentTime && e.endTime < currentTime){
-          pastEvents.add(e);
-        }else if(e.startTime < currentTime && e.endTime > currentTime){
-          ongoingEvents.add(e);
-        }else {
-          futureEvents.add(e);
+        ongoingEvents = List();
+        futureEvents = List();
+        List<dynamic> data = event.snapshot.value;
+        int currentTime = DateTime.now().millisecondsSinceEpoch;
+        for(dynamic event in data){
+          Events e = Events.fromJSON(jsonEncode(event));
+          if(e.startTime < currentTime && e.endTime < currentTime){
+            pastEvents.add(e);
+          }else if(e.startTime < currentTime && e.endTime > currentTime){
+            ongoingEvents.add(e);
+          }else {
+            futureEvents.add(e);
+          }
         }
-      }
-      dataLoaded = true;
-      notifyListeners();
-    })
-    .catchError((err){
+        dataLoaded = true;
+        notifyListeners();
+    }).onError((err){
       print('Error Loading Events ' + err.toString());
     });
   }
