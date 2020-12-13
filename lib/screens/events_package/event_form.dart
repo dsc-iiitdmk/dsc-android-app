@@ -12,17 +12,11 @@ import 'package:provider/provider.dart';
 
 class EventForm extends StatefulWidget {
 
-  HashMap<String, dynamic> data;
-  EventForm({this.data});
-
   @override
   _EventFormState createState() => _EventFormState();
 }
 
 class _EventFormState extends State<EventForm> {
-  final _eventRegistrationFormKey = GlobalKey<FormState>();
-  DateTime _startTime, _endTime;
-
   @override
   void initState() {
     super.initState();
@@ -31,13 +25,9 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    //final HashMap<String, dynamic> eventFormArgs = ModalRoute.of(context).settings.arguments;
-    final HashMap<String, dynamic> eventFormArgs = widget.data;
+    final HashMap<String, dynamic> eventFormArgs = ModalRoute.of(context).settings.arguments;
     final Events eventData = eventFormArgs['event'];
     Provider.of<FormData_Data>(context).loadForm(eventData.formID);
-
-    _startTime = DateTime.fromMillisecondsSinceEpoch(eventData.startTime);
-    _endTime = DateTime.fromMillisecondsSinceEpoch(eventData.endTime);
 
     return Scaffold(
       appBar: AppBar(
@@ -137,14 +127,13 @@ class _EventFormState extends State<EventForm> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Form(
-        key: _eventRegistrationFormKey,
         child: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          child: _currentTime.isAfter(_startTime) && _currentTime.isBefore(_endTime) ? Column(
+          child: Column(
             children: <Widget>[
               Text("Registration Form", style: Font_Style.productsans_SemiBold_underline(Colors.blue, 56),),
               SizedBox(height: 80.0.h,),
@@ -163,8 +152,6 @@ class _EventFormState extends State<EventForm> {
                 ),
               ) : Container(),
             ],
-          ) : Container(
-            child: Text("Registrations are closed as of now but hold on we will get back to you ASAP.", textDirection: TextDirection.ltr, textAlign: TextAlign.left, style: Font_Style.productsans_medium(null, 46),),
           ),
         ),
       ),

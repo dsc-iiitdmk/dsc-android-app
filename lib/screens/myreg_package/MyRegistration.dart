@@ -56,10 +56,7 @@ class MyRegistrationState extends State<MyRegistration>{
         data.putIfAbsent("event", () => event);
         data.putIfAbsent("responseTime", () => response.time);
         data.putIfAbsent("edit", () => false);
-        //Navigator.pushNamed(context, "event_form", arguments: data);
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>
-              EventForm(data: data)),);
+        Navigator.pushNamed(context, "event_form", arguments: data);
       },
       child: Card(
           elevation: 3.0,

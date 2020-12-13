@@ -156,6 +156,16 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
   }
 
   void OnEventClicked(Events event) async {
+    // checking event date. will allow form opening only if it is for ongoing
+
+    if(!(DateTime.fromMillisecondsSinceEpoch(event.startTime).isBefore(DateTime.now()) && DateTime.fromMillisecondsSinceEpoch(event.endTime).isAfter(DateTime.now()))){
+      // this is NOT an upcoming event
+      // TODO SHOW "FORM NOT AVAILABLE AT THE MOMENT" dialog or toast or snackbar
+      print('Form Not available at the moment!!!');
+      return;
+    }
+    // else if it is upcoming then the code continues
+
     Profile profile = await UserDetails.loadUserProfile();
     if(profile.isThisOurCollegeStudent() || event.formAllowForeign){
       if(Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs != null && Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs.contains(event.formID)){
@@ -178,9 +188,6 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
     HashMap<String, dynamic> data = new HashMap();
     data.putIfAbsent("event", () => event);
     data.putIfAbsent("edit", () => true);
-    //Navigator.pushNamed(context, "event_form", arguments: data);
-    Navigator.push(context,
-      MaterialPageRoute(builder: (context) =>
-          EventForm(data: data)),);
+    Navigator.pushNamed(context, "event_form", arguments: data);
   }
 }
