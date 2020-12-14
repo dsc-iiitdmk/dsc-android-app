@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/members_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Member.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,12 +64,15 @@ class _MembersBotNavState extends State<MembersBotNav> with TickerProviderStateM
                   },
                 ),
               ),
-              Expanded(child: ListView.builder(itemBuilder: (_, index) {
+              Expanded(child: Provider.of<LoadMembersData>(context).membersList != null && Provider.of<LoadMembersData>(context).membersList.containsKey(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)) && Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].length != 0 ?
+              ListView.builder(itemBuilder: (_, index) {
                 return membersCard(Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].elementAt(index));
-              }, itemCount: Provider.of<LoadMembersData>(context).membersList != null && Provider.of<LoadMembersData>(context).membersList.containsKey(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)) ? Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].length : 0,),
+              }, itemCount: Provider.of<LoadMembersData>(context).membersList != null && Provider.of<LoadMembersData>(context).membersList.containsKey(Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)) ? Provider.of<LoadMembersData>(context).membersList[Provider.of<LoadMembersData>(context).membersList.keys.elementAt(_index)].length : 0,
+              )
+                : Container(child: Center(child: Text("No Data", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.2), 56),),),),
                 flex: 1,)
             ],
-          ) : Container(),
+          ) : progressIndicator(),
       ),
     );
   }

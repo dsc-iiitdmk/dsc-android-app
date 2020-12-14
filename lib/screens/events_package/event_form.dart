@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/FormData.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class EventForm extends StatefulWidget {
 }
 
 class _EventFormState extends State<EventForm> {
+  DateTime _startTime, _endTime;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,9 @@ class _EventFormState extends State<EventForm> {
     final HashMap<String, dynamic> eventFormArgs = ModalRoute.of(context).settings.arguments;
     final Events eventData = eventFormArgs['event'];
     Provider.of<FormData_Data>(context).loadForm(eventData.formID);
+
+    _startTime = DateTime.fromMillisecondsSinceEpoch(eventData.startTime);
+    _endTime = DateTime.fromMillisecondsSinceEpoch(eventData.endTime);
 
     return Scaffold(
       appBar: AppBar(
@@ -127,7 +133,7 @@ class _EventFormState extends State<EventForm> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Form(
-        child: Container(
+        child: _currentTime.isAfter(_startTime) && _currentTime.isBefore(_endTime) ? Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
           decoration: BoxDecoration(
@@ -153,7 +159,7 @@ class _EventFormState extends State<EventForm> {
               ) : Container(),
             ],
           ),
-        ),
+        ) : Container(),
       ),
     );
   }
@@ -296,11 +302,13 @@ class _EventFormState extends State<EventForm> {
           .child("response/${FirebaseAuth.instance.currentUser.uid}/${dataToSave['formID']}/")
           .set(dataToSave)
       .then((value){
+        showSnackBar(context, "Form submitted successfully", Colors.green, Icons.check, Colors.white, Colors.white);
         print('Success!!!!');
-        Navigator.of(context).pop();
+        //Navigator.of(context).pop();
       })
       .catchError((err){
         print('Error Saving Response! : ' + err.toString());
+        showSnackBar(context, "Form can't be submitted currently", Colors.red, Icons.error, Colors.white, Colors.white);
       });
     }
   }

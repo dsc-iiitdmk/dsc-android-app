@@ -19,8 +19,6 @@ class LoadProjectData extends ChangeNotifier{
             data.forEach((element) {
               projects.add(Project.fromJSON(jsonEncode(element)));
             });
-            print("hahaha");
-            print(projects);
             notifyListeners();
       })
           .onError((err){

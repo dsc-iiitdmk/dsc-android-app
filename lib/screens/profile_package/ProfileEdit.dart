@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/Data/LocationData.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -87,14 +88,14 @@ class ProfileEditState extends State<ProfileEdit>{
              Container(
                  width: MediaQuery.of(context).size.width,
                  height: MediaQuery.of(context).size.height / 5,
-                 decoration: BoxDecoration(
+                 /*decoration: BoxDecoration(
                    image: DecorationImage(
                      //image: new NetworkImage("https://firebasestorage.googleapis.com/v0/b/aegle-e153c.appspot.com/o/HomeTiles%2Faboutus.png?alt=media&token=cfc92220-6077-41ed-8e14-dc654c5e1fc"),
                      image: changedNow ? FileImage(_imageFile) : (FirebaseAuth.instance.currentUser.photoURL == null ? AssetImage("assets/userprofiledefault.png") : NetworkImage(FirebaseAuth.instance.currentUser.photoURL)),
                      fit: BoxFit.fill,
-                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
+                     //colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
                    ),
-                 ),
+                 ),*/
                  child: BackdropFilter(
                    filter: ImageFilter.blur(sigmaX: 5,),
                    child: Center(
@@ -148,7 +149,7 @@ class ProfileEditState extends State<ProfileEdit>{
                      height: MediaQuery.of(context).size.height,
                      width: MediaQuery.of(context).size.width,
                      padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
-                     child: SingleChildScrollView(
+                     child: isProfileLoaded || _locationData.states != null || _locationData.states.length != 0 ? SingleChildScrollView(
                        child: Column(
                          children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
                            profileEntry("Email Address", false, _emailTextController, 45, TextInputType.emailAddress),
@@ -226,7 +227,7 @@ class ProfileEditState extends State<ProfileEdit>{
                            SizedBox(height: 150.0.h,),
                          ],
                        ),
-                     ),
+                     ) : progressIndicator(),
                    ),
                    Align(
                      alignment: Alignment.bottomCenter,
@@ -234,16 +235,16 @@ class ProfileEditState extends State<ProfileEdit>{
                        padding: EdgeInsets.symmetric(vertical: 50.0.h),
                        child: RaisedButton(
                          onPressed: () async {
-                           print("update");
-                           ////////////////////////////////////////////////////
-                           if(_studentNameTextController.text != FirebaseAuth.instance.currentUser.displayName){
-                             await FirebaseAuth.instance.currentUser.updateProfile(displayName: _studentNameTextController.text);
-                           }
+                           if(isProfileLoaded || _locationData.states != null || _locationData.states.length != 0) {
+                             if(_studentNameTextController.text != FirebaseAuth.instance.currentUser.displayName){
+                               await FirebaseAuth.instance.currentUser.updateProfile(displayName: _studentNameTextController.text);
+                             }
 
-                           userProfile.email = _emailTextController.text;
-                           userProfile.phone = _phoneTextController.text;
-                           await UserDetails.updateUserProfile(userProfile);
-                           formUpdateFlare(context);
+                             userProfile.email = _emailTextController.text;
+                             userProfile.phone = _phoneTextController.text;
+                             UserDetails.updateUserProfile(userProfile);
+                             formUpdateFlare(context);
+                           }
                          },
                          textColor: Colors.white,
                          color: Colors.teal[800],
@@ -439,10 +440,12 @@ class ProfileEditState extends State<ProfileEdit>{
       }
       else {
         print("image picker error");
+        showSnackBar(context, "Profile pic can't be updated currently", Colors.red, Icons.error, Colors.white, Colors.white);
       }
     });
     Reference ref =FirebaseStorage.instance.ref('Profile/${FirebaseAuth.instance.currentUser.uid}');
     ref.putFile(_imageFile).whenComplete(() => updateOnDB(ref));
+    showSnackBar(context, "Profile pic uploaded successfully", Colors.green, Icons.check, Colors.white, Colors.white);
     print('File Uploaded');
   }
 

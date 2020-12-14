@@ -1,6 +1,7 @@
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/project_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Project.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,9 +37,12 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
         title: Text("Projects", textAlign: TextAlign.left, style: Font_Style.productsans_Bold(null, 60)),
       ),
       body: SafeArea(
-          child: ListView.builder(itemBuilder: (context, index){
+          child: Provider.of<LoadProjectData>(context).projects != null ? getListItemCount() != 0 ? ListView.builder(itemBuilder: (context, index){
             return projectsCard(Provider.of<LoadProjectData>(context).projects.elementAt(index));
           }, scrollDirection: Axis.vertical, itemCount: getListItemCount(), padding: EdgeInsets.symmetric(vertical: 10),)
+              : Container(
+            child: Center(child: Text("No Data", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.2), 56),),),
+          ) : progressIndicator(),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Profile.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:dsc_iiitdmkl/screens/events_package/event_form.dart';
 import 'package:dsc_iiitdmkl/services/user_details_firebase.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,7 +78,7 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                   child: TabBarView(
                     controller: _eventsTabController,
                     children: <Widget>[
-                      SingleChildScrollView(
+                      Provider.of<LoadEventsData>(context).pastEvents != null ? Provider.of<LoadEventsData>(context).pastEvents.length != 0 ? SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: ListView.builder(
                           physics: ScrollPhysics(),
@@ -88,8 +89,11 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                             return _eventsItem(Provider.of<LoadEventsData>(context).pastEvents.elementAt(i));
                           },
                         ),
-                      ),
-                      SingleChildScrollView(
+                      ) : Container(
+                          child: Center(child: Text("No Data", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.2), 56),)))
+                          : progressIndicator(),
+
+                      Provider.of<LoadEventsData>(context).ongoingEvents != null ? Provider.of<LoadEventsData>(context).ongoingEvents.length != 0 ? SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: ListView.builder(
                           physics: ScrollPhysics(),
@@ -100,8 +104,11 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                             return _eventsItem(Provider.of<LoadEventsData>(context).ongoingEvents.elementAt(i));
                           },
                         ),
-                      ),
-                      SingleChildScrollView(
+                      ): Container(
+                        child: Center(child: Text("No Data", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.2), 56),)))
+                      : progressIndicator(),
+
+                      Provider.of<LoadEventsData>(context).futureEvents != null ? Provider.of<LoadEventsData>(context).futureEvents.length != 0 ? SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: ListView.builder(
                           physics: ScrollPhysics(),
@@ -112,7 +119,9 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
                             return _eventsItem(Provider.of<LoadEventsData>(context).futureEvents.elementAt(i));
                           },
                         ),
-                      ),
+                      ) : Container(
+                    child: Center(child: Text("No Data", style: Font_Style.productsans_medium(Font_Style.primaryColor.withOpacity(0.2), 56),)))
+                      : progressIndicator(),
                     ],
                   ),
                 ),
@@ -160,26 +169,26 @@ class _EventsBotNavState extends State<EventsBotNav> with SingleTickerProviderSt
 
     if(!(DateTime.fromMillisecondsSinceEpoch(event.startTime).isBefore(DateTime.now()) && DateTime.fromMillisecondsSinceEpoch(event.endTime).isAfter(DateTime.now()))){
       // this is NOT an upcoming event
-      // TODO SHOW "FORM NOT AVAILABLE AT THE MOMENT" dialog or toast or snackbar
-      print('Form Not available at the moment!!!');
+      openForm(event);
+      //print('Form Not available at the moment!!!');
       return;
     }
-    // else if it is upcoming then the code continues
 
+    // else if it is upcoming then the code continues
     Profile profile = await UserDetails.loadUserProfile();
     if(profile.isThisOurCollegeStudent() || event.formAllowForeign){
       if(Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs != null && Provider.of<FormData_Data>(context, listen: false).myForms_FormIDs.contains(event.formID)){
         if(event.editable){
           openForm(event);
         }else{
-          // TODO ADD DIALOG OR TOAST TO SAY "FORM IS NOT EDITABLE, GO TO MY REGISTRATIONS TO VIEW YOUR RESPONSES"
+          showSnackBar(context, "Form is not Editable at the moment", Colors.red, Icons.error, Colors.white, Colors.white);
           print('form not editable');
         }
       }else{
         openForm(event);
       }
     }else{
-      // TODO ADD DIALOG OR TOAST TO SHOW OUTSIDE STUDENTS NOT ALLOWED
+      showSnackBar(context, "Sorry outside students are not allowed", Colors.red, Icons.error, Colors.white, Colors.white);
       print('Sorry Outside students not allowed');
     }
   }

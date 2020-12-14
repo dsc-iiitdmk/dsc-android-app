@@ -4,6 +4,7 @@ import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/form_data.dart';
 import 'package:dsc_iiitdmkl/Backend/ChangeNotifiers/home_data.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Home.dart';
 import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
+import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -135,11 +136,11 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0.h,),
-                      Column(
-                        children: Provider.of<LoadHomeData>(context).homeData != null ? <Widget>[
+                      Provider.of<LoadHomeData>(context).homeData != null ? Column(
+                        children: <Widget>[
                           for(HomeCard card in Provider.of<LoadHomeData>(context).homeData.homeCards) HomeCardView(context, card.title, card.text)
-                        ] : [],
-                      ),
+                        ],
+                      ) : progressIndicator(),
                       SizedBox(height: 40.0.h,),
                       Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
                       SizedBox(height: 30.0.h,),
