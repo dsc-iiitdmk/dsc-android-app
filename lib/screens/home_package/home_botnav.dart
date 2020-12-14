@@ -62,169 +62,163 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child: Column(
-            children: <Widget>[
-              Material(
-                elevation: 1.0,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height / 3 - 70.0.h,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      child: SvgPicture.asset("assets/home_bg.svg", height: MediaQuery.of(context).size.height / 3 - 70.0.h, width: MediaQuery.of(context).size.width,),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 18.0.w, top: 18.0.h),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                            width: 150.0.w,
-                            height: 150.0.h,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.fitWidth,
-                                    image: AssetImage("assets/iiitdmk-logo.png")
-                                )
-                            )
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 3 - 70.0.h,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: 280.0.w,
-                                height: 100.0.h,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: AssetImage("assets/logo.png")
-                                    )
-                                )
-                            ),
-                            SizedBox(height: 20.0.h,),
-                            _totalCharacterCount == null
-                                ? SizedBox(
-                              width: MediaQuery.of(context).size.width - 520.0.w,
-                              child: Text(_totalString, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)))
-                                : AnimatedBuilder(
-                              animation: _totalCharacterCount,
-                              builder: (BuildContext context, Widget child) {
-                                String _displayText = _totalString.substring(0, _totalCharacterCount.value);
-                                return SizedBox(
-                                  width: MediaQuery.of(context).size.width - 520.0.w,
-                                    child: Text(_displayText, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)));
-                              },
-                            ),
-                            SizedBox(height: 50.0.h,),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: <Widget>[
+                Material(
+                  elevation: 1.0,
+                  child: Stack(
                     children: <Widget>[
-                      SizedBox(height: 20.0.h,),
-                      Provider.of<LoadHomeData>(context).homeData != null ? Column(
-                        children: <Widget>[
-                          for(HomeCard card in Provider.of<LoadHomeData>(context).homeData.homeCards) HomeCardView(context, card.title, card.text)
-                        ],
-                      ) : progressIndicator(),
-                      SizedBox(height: 40.0.h,),
-                      Text("Let's Connect", style: Font_Style.productsans_Bold(null, 60),),
-                      SizedBox(height: 30.0.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Container(
-                              padding: EdgeInsets.all(18.0.h),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                          Container(
-                              padding: EdgeInsets.all(18.0.h),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                          Container(
-                              padding: EdgeInsets.all(18.0.h),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                        ],
+                      Container(
+                        height: MediaQuery.of(context).size.height / 3 - 70.0.h,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: SvgPicture.asset("assets/home_bg.svg", height: MediaQuery.of(context).size.height / 3 - 70.0.h, width: MediaQuery.of(context).size.width,),
                       ),
-                      SizedBox(height: 40.0.h,),
-                      Card(
-                        elevation: 7.0,
-                        margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
-                        color: Colors.white.withOpacity(0.9),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 4.0.h,
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(top: 30.0.h,),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                      Padding(
+                        padding: EdgeInsets.only(right: 18.0.w, top: 18.0.h),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                              width: 150.0.w,
+                              height: 150.0.h,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      image: AssetImage("assets/iiitdmk-logo.png")
+                                  )
+                              )
                           ),
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 3 - 70.0.h,
+                        child: Align(
+                          alignment: Alignment.center,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text("Visit IIITDM Kurnool", style: Font_Style.productsans_Bold(null, 60),),
-                              SizedBox(height: 22.0.h,),
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
-                                  child: GoogleMap(
-                                    onMapCreated: (GoogleMapController controller) {
-                                      _googleMapsController.complete(controller);
-                                    },
-                                    initialCameraPosition: _camPosition,
-                                    scrollGesturesEnabled: true,
-                                    tiltGesturesEnabled: true,
-                                    trafficEnabled: false,
-                                    compassEnabled: true,
-                                    rotateGesturesEnabled: true,
-                                    //myLocationEnabled: true,
-                                    zoomGesturesEnabled: true,
-                                    zoomControlsEnabled: true,
-                                    liteModeEnabled: true,
-                                    mapType: MapType.hybrid,
-                                    markers: {
-                                      Marker(
-                                          markerId: _markerId,
-                                          position: LatLng(15.761774, 78.036388)),
-                                    },
-                                  ),
-                                ),
+                              Container(
+                                  width: 280.0.w,
+                                  height: 100.0.h,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage("assets/logo.png")
+                                      )
+                                  )
                               ),
+                              SizedBox(height: 20.0.h,),
+                              _totalCharacterCount == null
+                                  ? SizedBox(
+                                  width: MediaQuery.of(context).size.width - 520.0.w,
+                                  child: Text(_totalString, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)))
+                                  : AnimatedBuilder(
+                                animation: _totalCharacterCount,
+                                builder: (BuildContext context, Widget child) {
+                                  String _displayText = _totalString.substring(0, _totalCharacterCount.value);
+                                  return SizedBox(
+                                      width: MediaQuery.of(context).size.width - 520.0.w,
+                                      child: Text(_displayText, textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(Font_Style.primaryColor.withOpacity(0.7), 50,)));
+                                },
+                              ),
+                              SizedBox(height: 50.0.h,),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 20.0.h,),
                     ],
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20.0.h,),
+                Provider.of<LoadHomeData>(context).homeData != null ? Column(
+                  children: <Widget>[
+                    for(HomeCard card in Provider.of<LoadHomeData>(context).homeData.homeCards) HomeCardView(context, card.title, card.text)
+                  ],
+                ) : progressIndicator(),
+                SizedBox(height: 40.0.h,),
+                Text("Let's Connect", textDirection: TextDirection.ltr, textAlign: TextAlign.center, style: Font_Style.productsans_Bold(null, 60),),
+                SizedBox(height: 30.0.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.all(18.0.h),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                        ),
+                        child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    Container(
+                        padding: EdgeInsets.all(18.0.h),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                        ),
+                        child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    Container(
+                        padding: EdgeInsets.all(18.0.h),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                        ),
+                        child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                  ],
+                ),
+                SizedBox(height: 40.0.h,),
+                Card(
+                  elevation: 7.0,
+                  margin: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 20.0.h),
+                  color: Colors.white.withOpacity(0.9),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 4.0.h,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 30.0.h,),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text("Visit IIITDM Kurnool", style: Font_Style.productsans_Bold(null, 60),),
+                        SizedBox(height: 22.0.h,),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+                            child: GoogleMap(
+                              onMapCreated: (GoogleMapController controller) {
+                                _googleMapsController.complete(controller);
+                              },
+                              initialCameraPosition: _camPosition,
+                              scrollGesturesEnabled: true,
+                              tiltGesturesEnabled: true,
+                              trafficEnabled: false,
+                              compassEnabled: true,
+                              rotateGesturesEnabled: true,
+                              //myLocationEnabled: true,
+                              zoomGesturesEnabled: true,
+                              zoomControlsEnabled: true,
+                              liteModeEnabled: true,
+                              mapType: MapType.hybrid,
+                              markers: {
+                                Marker(
+                                    markerId: _markerId,
+                                    position: LatLng(15.761774, 78.036388)),
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0.h,),
+              ],
+            ),
           ),
         ),
       ),
@@ -247,10 +241,11 @@ Widget HomeCardView(BuildContext context, String title, String text){
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(title, style: Font_Style.productsans_Bold(null, 60),),
-          SizedBox(height: 50.0.h,),
-          Text(text, textAlign: TextAlign.center, style: Font_Style.productsans_medium(null, 45),),
+          SizedBox(height: 30.0.h,),
+          Text(text, textAlign: TextAlign.left, style: Font_Style.productsans_medium(null, 45),),
         ],
       ),
     ),

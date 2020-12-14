@@ -6,6 +6,7 @@ import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
@@ -18,6 +19,7 @@ class EventForm extends StatefulWidget {
 }
 
 class _EventFormState extends State<EventForm> {
+
   DateTime _startTime, _endTime;
 
   @override
@@ -301,14 +303,14 @@ class _EventFormState extends State<EventForm> {
       FirebaseDatabase.instance.reference()
           .child("response/${FirebaseAuth.instance.currentUser.uid}/${dataToSave['formID']}/")
           .set(dataToSave)
-      .then((value){
-        showSnackBar(context, "Form submitted successfully", Colors.green, Icons.check, Colors.white, Colors.white);
+          .then((value){
         print('Success!!!!');
+        formUpdateFlare(context, "Form submitted successfully", "");
         //Navigator.of(context).pop();
       })
-      .catchError((err){
+          .catchError((err){
         print('Error Saving Response! : ' + err.toString());
-        showSnackBar(context, "Form can't be submitted currently", Colors.red, Icons.error, Colors.white, Colors.white);
+        formUpdateFlare(context, "There is an error in form submission", "e");
       });
     }
   }

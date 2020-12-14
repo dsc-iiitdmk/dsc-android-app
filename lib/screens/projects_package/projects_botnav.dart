@@ -60,18 +60,20 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
           borderRadius: BorderRadius.circular(20),
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 10,),
-              Text(project.name, style: Font_Style.productsans_Bold(Colors.black, 60), textAlign: TextAlign.center,),
-              SizedBox(height: 5,),
-              Text(project.desc, style: Font_Style.productsans_medium(Colors.grey[800], 45), textAlign: TextAlign.center,),
-              SizedBox(height: 5,),
-              Container(alignment: Alignment.bottomRight, child: InkWell(child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.black,), onTap: () async {await launch(project.gitLink);},),),
-              SizedBox(height: 10,),
+          height: 250.0.h,
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Row(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(project.name, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_Bold(Colors.black, 60), textAlign: TextAlign.center,),
+                  SizedBox(height: 15,),
+                  Text(project.desc, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_medium(Colors.grey[800], 45), textAlign: TextAlign.center,),
+                ],
+              ),
+              Spacer(),
+              Container(child: InkWell(child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.black,), onTap: () async {await launch(project.gitLink);},),),
             ],
           )
         )

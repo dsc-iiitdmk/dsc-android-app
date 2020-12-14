@@ -143,97 +143,87 @@ class ProfileEditState extends State<ProfileEdit>{
                  )
              ),
              Expanded(
-               child: Stack(
-                 children: <Widget>[
-                   Container(
-                     height: MediaQuery.of(context).size.height,
-                     width: MediaQuery.of(context).size.width,
-                     padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
-                     child: isProfileLoaded || _locationData.states != null || _locationData.states.length != 0 ? SingleChildScrollView(
-                       child: Column(
-                         children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
-                           profileEntry("Email Address", false, _emailTextController, 45, TextInputType.emailAddress),
-                           profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.text),
-                           profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
-                           profileDropDownEntry(
-                               <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']
-                                   .map<DropdownMenuItem<String>>((String value) {
-                                 return DropdownMenuItem<String>(
-                                   value: value,
-                                   child: Text(value),
-                                 );
-                               })
-                                   .toList(),
-                               userProfile.sem,
-                               "Select Semester",
-                                   (String newValue) {
-                                 setState(() {
-                                   userProfile.sem = newValue;
-                                 });
-                               }
-                           ),
-                           profileDropDownEntry(
-                               <String>['Computer Science', 'Electronics & Communications', 'Mechanical', 'Others']
-                                   .map<DropdownMenuItem<String>>((String value) {
-                                 return DropdownMenuItem<String>(
-                                   value: value,
-                                   child: Text(value),
-                                 );
-                               })
-                                   .toList(),
-                               userProfile.branch,
-                               "Select Branch",
-                                   (String newValue) {
-                                 setState(() {
-                                   userProfile.branch = newValue;
-                                 });
-                               }
-                           ),
-                           profileDropDownEntry(
-                               stateList
-                                   .map<DropdownMenuItem<String>>((String value) {
-                                 return DropdownMenuItem<String>(
-                                   value: value,
-                                   child: Text(value),
-                                 );
-                               })
-                                   .toList(),
-                               userProfile.state,
-                               "Select State",
-                                   (String newValue) {
-                                 setState(() {
-                                   userProfile.state = newValue;
-                                   userProfile.dist = null;
-                                 });
-                               }
-                           ),
-                           profileDropDownEntry(
-                               _locationData.getDistrict(userProfile.state)
-                                   .map<DropdownMenuItem<String>>((String value) {
-                                 return DropdownMenuItem<String>(
-                                   value: value,
-                                   child: Text(value),
-                                 );
-                               })
-                                   .toList(),
-                               userProfile.dist,
-                               "Select District",
-                                   (String newValue) {
-                                 setState(() {
-                                   userProfile.dist = newValue;
-                                 });
-                               }
-                           ),
-                           SizedBox(height: 150.0.h,),
-                         ],
+               child: Container(
+                 height: MediaQuery.of(context).size.height,
+                 width: MediaQuery.of(context).size.width,
+                 padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 50.0.h),
+                 child: isProfileLoaded || _locationData.states != null || _locationData.states.length != 0 ? SingleChildScrollView(
+                   child: Column(
+                     children: !isProfileLoaded || _locationData.states == null || _locationData.states.length == 0 ? [] : [
+                       profileEntry("Email Address", false, _emailTextController, 45, TextInputType.emailAddress),
+                       profileEntry("Student Name", true, _studentNameTextController, 30, TextInputType.text),
+                       profileEntry("Phone Number", true, _phoneTextController, 10, TextInputType.phone),
+                       profileDropDownEntry(
+                           <String>['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th']
+                               .map<DropdownMenuItem<String>>((String value) {
+                             return DropdownMenuItem<String>(
+                               value: value,
+                               child: Text(value),
+                             );
+                           })
+                               .toList(),
+                           userProfile.sem,
+                           "Select Semester",
+                               (String newValue) {
+                             setState(() {
+                               userProfile.sem = newValue;
+                             });
+                           }
                        ),
-                     ) : progressIndicator(),
-                   ),
-                   Align(
-                     alignment: Alignment.bottomCenter,
-                     child: Padding(
-                       padding: EdgeInsets.symmetric(vertical: 50.0.h),
-                       child: RaisedButton(
+                       profileDropDownEntry(
+                           <String>['Computer Science', 'Electronics & Communications', 'Mechanical', 'Others']
+                               .map<DropdownMenuItem<String>>((String value) {
+                             return DropdownMenuItem<String>(
+                               value: value,
+                               child: Text(value),
+                             );
+                           })
+                               .toList(),
+                           userProfile.branch,
+                           "Select Branch",
+                               (String newValue) {
+                             setState(() {
+                               userProfile.branch = newValue;
+                             });
+                           }
+                       ),
+                       profileDropDownEntry(
+                           stateList
+                               .map<DropdownMenuItem<String>>((String value) {
+                             return DropdownMenuItem<String>(
+                               value: value,
+                               child: Text(value),
+                             );
+                           })
+                               .toList(),
+                           userProfile.state,
+                           "Select State",
+                               (String newValue) {
+                             setState(() {
+                               userProfile.state = newValue;
+                               userProfile.dist = null;
+                             });
+                           }
+                       ),
+                       profileDropDownEntry(
+                           _locationData.getDistrict(userProfile.state)
+                               .map<DropdownMenuItem<String>>((String value) {
+                             return DropdownMenuItem<String>(
+                               value: value,
+                               child: Text(value),
+                             );
+                           })
+                               .toList(),
+                           userProfile.dist,
+                           "Select District",
+                               (String newValue) {
+                             setState(() {
+                               userProfile.dist = newValue;
+                             });
+                           }
+                       ),
+                       SizedBox(height: 50.0.h,),
+                       RaisedButton(
                          onPressed: () async {
                            if(isProfileLoaded || _locationData.states != null || _locationData.states.length != 0) {
                              if(_studentNameTextController.text != FirebaseAuth.instance.currentUser.displayName){
@@ -243,7 +233,7 @@ class ProfileEditState extends State<ProfileEdit>{
                              userProfile.email = _emailTextController.text;
                              userProfile.phone = _phoneTextController.text;
                              UserDetails.updateUserProfile(userProfile);
-                             formUpdateFlare(context);
+                             formUpdateFlare(context, "Profile updated successfully", "");
                            }
                          },
                          textColor: Colors.white,
@@ -252,9 +242,10 @@ class ProfileEditState extends State<ProfileEdit>{
                              vertical: 10.0, horizontal: 45.0),
                          child: Text("Update", style: Font_Style.productsans_Bold(Colors.white, 52),),
                        ),
-                     ),
+                       SizedBox(height: 100.0.h,),
+                     ],
                    ),
-                 ],
+                 ) : progressIndicator(),
                ),
              ),
            ],
@@ -305,48 +296,6 @@ class ProfileEditState extends State<ProfileEdit>{
         cursorColor: Font_Style.secondaryColor.withOpacity(0.3),
         style: Font_Style.productsans_SemiBold(Font_Style.primaryColor.withOpacity(0.7), 45),
       ),
-    );
-  }
-
-  void formUpdateFlare(context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            "Profile updated successfully",
-            style: Font_Style.productsans_Bold(null, 50),
-          ),
-          contentPadding: EdgeInsets.all(0),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.width / 4,
-                width: MediaQuery.of(context).size.width / 4,
-                child: FlareActor(
-                    "assets/form agreed anim.flr",
-                    alignment: Alignment.center,
-                    fit: BoxFit.fill,
-                    animation: "update",
-                    snapToEnd: true,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Ok',
-                style: Font_Style.productsans_SemiBold(null, 50)
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
