@@ -261,9 +261,8 @@ class _EventFormState extends State<EventForm> {
   }
 
   Widget Widget_FormEntryRadioGroup(FormEntry entry, dynamic defVal, bool isEnabled, Function(dynamic) listener){
-
     var groupVal = defVal;
-
+    
     return Column(
       children: [
         SizedBox(height: 20,),
