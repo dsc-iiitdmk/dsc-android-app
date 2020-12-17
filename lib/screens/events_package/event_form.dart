@@ -136,7 +136,7 @@ class _EventFormState extends State<EventForm> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Form(
-        child: Container(
+        child: !isEditable || (isEditable && _startTime.isBefore(_currentTime) && _endTime.isAfter(_currentTime)) ? Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
           decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class _EventFormState extends State<EventForm> {
               ) : Container(),
             ],
           ),
-        ),
+        ) : Container(),
       ),
     );
   }
