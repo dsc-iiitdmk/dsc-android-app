@@ -32,8 +32,10 @@ class _EventFormState extends State<EventForm> {
     final Events eventData = eventFormArgs['event'];
     Provider.of<FormData_Data>(context).loadForm(eventData.formID);
 
-    _startTime = DateTime.fromMillisecondsSinceEpoch(eventData.startTime);
-    _endTime = DateTime.fromMillisecondsSinceEpoch(eventData.endTime);
+    if(eventFormArgs['edit']){
+      _startTime = DateTime.fromMillisecondsSinceEpoch(eventData.startTime);
+      _endTime = DateTime.fromMillisecondsSinceEpoch(eventData.endTime);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -133,7 +135,7 @@ class _EventFormState extends State<EventForm> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Form(
-        child: _currentTime.isAfter(_startTime) && _currentTime.isBefore(_endTime) ? Container(
+        child: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 30.0.w, vertical: 25.0.h),
           decoration: BoxDecoration(
@@ -159,7 +161,7 @@ class _EventFormState extends State<EventForm> {
               ) : Container(),
             ],
           ),
-        ) : Container(),
+        ),
       ),
     );
   }
