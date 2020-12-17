@@ -6,6 +6,7 @@ import 'package:dsc_iiitdmkl/ThemeData/fontstyle.dart';
 import 'package:dsc_iiitdmkl/screens/components/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dsc_iiitdmkl/Backend/DataClasses/Events.dart';
