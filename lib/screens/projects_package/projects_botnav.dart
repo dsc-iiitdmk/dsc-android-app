@@ -61,16 +61,19 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
         ),
         child: Container(
           height: 250.0.h,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: Row(
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(project.name, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_Bold(Colors.black, 60), textAlign: TextAlign.center,),
-                  SizedBox(height: 15,),
-                  Text(project.desc, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_medium(Colors.grey[800], 45), textAlign: TextAlign.center,),
-                ],
+              Container(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(project.name, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_Bold(Colors.black, 60), textAlign: TextAlign.center,),
+                    SizedBox(height: 15,),
+                    Text(project.desc, textDirection: TextDirection.ltr, overflow: TextOverflow.ellipsis, style: Font_Style.productsans_medium(Colors.grey[800], 45), textAlign: TextAlign.center,),
+                  ],
+                ),
               ),
               Spacer(),
               Container(child: InkWell(child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.black,), onTap: () async {await launch(project.gitLink);},),),
@@ -79,6 +82,4 @@ class _ProjectsBotNavState extends State<ProjectsBotNav> with TickerProviderStat
         )
     );
   }
-
-
 }

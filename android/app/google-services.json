@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "1011255333918",
-    "firebase_url": "https://dsc-mobile-app.firebaseio.com",
-    "project_id": "dsc-mobile-app",
-    "storage_bucket": "dsc-mobile-app.appspot.com"
+    "project_number": "564631233711",
+    "project_id": "dsc-mobile-app-ac05b",
+    "storage_bucket": "dsc-mobile-app-ac05b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1011255333918:android:c8edcd96b6f83d97324a0f",
+        "mobilesdk_app_id": "1:564631233711:android:ef56239f849d8d8699a05a",
         "android_client_info": {
-          "package_name": "com.example.dsc_iiitdmkl"
+          "package_name": "com.iiitdmkl.dsc_iiitdmkl"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1011255333918-9mio99cct7j5imvdbs74i15jr88omc3m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.dsc_iiitdmkl",
-            "certificate_hash": "db60dce7023778ce9686a1259c2cb5fd7dc300bc"
-          }
-        },
-        {
-          "client_id": "1011255333918-58rbvmqn96ji8fbcc1ap563ikpmkngfo.apps.googleusercontent.com",
+          "client_id": "564631233711-5nnaids0hqtrpl881h84572d9bublpgn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBZC7wtPUBwNkm5IccO9UWKGKBYUHHz58A"
+          "current_key": "AIzaSyBLb6_3-lYGRrH8IASw8X9_r8D_MoJUuxI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1011255333918-58rbvmqn96ji8fbcc1ap563ikpmkngfo.apps.googleusercontent.com",
+              "client_id": "564631233711-5nnaids0hqtrpl881h84572d9bublpgn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

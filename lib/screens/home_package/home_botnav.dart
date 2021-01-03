@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeBotNav extends StatefulWidget {
   @override
@@ -144,27 +145,43 @@ class _HomeBotNavState extends State<HomeBotNav> with TickerProviderStateMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Container(
-                        padding: EdgeInsets.all(18.0.h),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                    Container(
-                        padding: EdgeInsets.all(18.0.h),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
-                    Container(
-                        padding: EdgeInsets.all(18.0.h),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    InkWell(
+                      onTap: () async
+                      {
+                        await launch(Provider.of<LoadHomeData>(context, listen: false).homeData.email);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(18.0.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                          ),
+                          child: SvgPicture.asset("assets/email.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await launch(Provider.of<LoadHomeData>(context, listen: false).homeData.gitLink);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(18.0.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                          ),
+                          child: SvgPicture.asset("assets/github.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await launch(Provider.of<LoadHomeData>(context, listen: false).homeData.instaLink);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(18.0.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                          ),
+                          child: SvgPicture.asset("assets/instagram.svg", height: 80.0.h, width: 80.0.w, color: Colors.white,)),
+                    ),
                   ],
                 ),
                 SizedBox(height: 40.0.h,),
