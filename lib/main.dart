@@ -11,6 +11,7 @@ import 'package:dsc_iiitdmkl/screens/profile_package/ProfileEdit.dart';
 import 'package:dsc_iiitdmkl/screens/profile_package/developers.dart';
 import 'package:dsc_iiitdmkl/screens/profile_package/privacy_policy.dart';
 import 'package:dsc_iiitdmkl/screens/welcome_package/welcome_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ import 'ThemeData/fontstyle.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(MultiProvider(
